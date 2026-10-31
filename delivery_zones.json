@@ -1,0 +1,72 @@
+[
+  {
+    "code": "ZAYED-10",
+    "nameAr": "الشيخ زايد - الحي العاشر وجوار الفرع",
+    "nameEn": "Sheikh Zayed - District 10 & Branch Vicinity",
+    "fee": 15.0,
+    "timeMinutes": 25
+  },
+  {
+    "code": "ZAYED-01",
+    "nameAr": "الشيخ زايد - الأحياء (1 إلى 5)",
+    "nameEn": "Sheikh Zayed - Districts 1-5",
+    "fee": 20.0,
+    "timeMinutes": 30
+  },
+  {
+    "code": "ZAYED-06",
+    "nameAr": "الشيخ زايد - الأحياء (6 إلى 9)",
+    "nameEn": "Sheikh Zayed - Districts 6-9",
+    "fee": 20.0,
+    "timeMinutes": 35
+  },
+  {
+    "code": "ZAYED-BEV",
+    "nameAr": "الشيخ زايد - بيفرلي هيلز والحزام الأخضر",
+    "nameEn": "Beverly Hills & Green Belt",
+    "fee": 30.0,
+    "timeMinutes": 40
+  },
+  {
+    "code": "ZAYED-KHM",
+    "nameAr": "الشيخ زايد - الخمائل والربوة والكرما",
+    "nameEn": "Khamayel, Rabwa & Karma",
+    "fee": 25.0,
+    "timeMinutes": 35
+  },
+  {
+    "code": "OCT-SOMID",
+    "nameAr": "6 أكتوبر - غرب سوميد ومحور 26 يوليو",
+    "nameEn": "6th Oct - West Somid & 26th July Corridor",
+    "fee": 15.0,
+    "timeMinutes": 25
+  },
+  {
+    "code": "OCT-MOTAMAYEZ",
+    "nameAr": "6 أكتوبر - الحي المتميز وجامعة مصر MUST",
+    "nameEn": "6th Oct - Motamayez & MUST University",
+    "fee": 20.0,
+    "timeMinutes": 30
+  },
+  {
+    "code": "OCT-HOSARY",
+    "nameAr": "6 أكتوبر - الحصري والحي الأول والكفراوي",
+    "nameEn": "6th Oct - Hosary & Kafrawy",
+    "fee": 25.0,
+    "timeMinutes": 35
+  },
+  {
+    "code": "OCT-DAHSHUR",
+    "nameAr": "6 أكتوبر - وصلة دهشور والتوسعات الشمالية",
+    "nameEn": "Dahshur Link & North Expansions",
+    "fee": 25.0,
+    "timeMinutes": 35
+  },
+  {
+    "code": "OCT-HADAYEK",
+    "nameAr": "6 أكتوبر - حدائق أكتوبر وهضبة الأهرام",
+    "nameEn": "October Gardens & Hadayek Al Ahram",
+    "fee": 35.0,
+    "timeMinutes": 45
+  }
+]

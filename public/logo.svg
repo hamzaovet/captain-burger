@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bunGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFB347" />
+      <stop offset="100%" stop-color="#ED7A1C" />
+    </linearGradient>
+    <linearGradient id="pattyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5C2414" />
+      <stop offset="100%" stop-color="#3A140A" />
+    </linearGradient>
+    <linearGradient id="cheeseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFCC00" />
+      <stop offset="100%" stop-color="#FFA000" />
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#D62300" />
+      <stop offset="100%" stop-color="#A51800" />
+    </linearGradient>
+    <filter id="drop" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#502314" flood-opacity="0.15" />
+    </filter>
+  </defs>
+
+  <!-- Background Circle (Sesame Cream #F5EBDC) -->
+  <circle cx="250" cy="250" r="236" fill="#F5EBDC" stroke="#502314" stroke-width="10" />
+  <circle cx="250" cy="250" r="222" fill="none" stroke="#D62300" stroke-width="3" stroke-dasharray="8 6" />
+
+  <!-- Burger Icon Illustration -->
+  <g transform="translate(0, -18)" filter="url(#drop)">
+    <!-- Top Bun -->
+    <path d="M 150 200 C 150 120, 350 120, 350 200 Z" fill="url(#bunGrad)" stroke="#502314" stroke-width="7" stroke-linejoin="round" />
+    <!-- Sesame Seeds on Top Bun -->
+    <ellipse cx="210" cy="155" rx="6" ry="3.5" fill="#FFF5EA" transform="rotate(-15 210 155)" />
+    <ellipse cx="250" cy="142" rx="6" ry="3.5" fill="#FFF5EA" transform="rotate(5 250 142)" />
+    <ellipse cx="290" cy="155" rx="6" ry="3.5" fill="#FFF5EA" transform="rotate(20 290 155)" />
+    <ellipse cx="180" cy="178" rx="5" ry="3" fill="#FFF5EA" transform="rotate(-30 180 178)" />
+    <ellipse cx="320" cy="178" rx="5" ry="3" fill="#FFF5EA" transform="rotate(30 320 178)" />
+    <ellipse cx="250" cy="170" rx="6" ry="3.5" fill="#FFF5EA" />
+
+    <!-- Captain's Visor / Anchor Emblem on Top Bun -->
+    <path d="M 235 110 L 265 110 L 260 125 L 240 125 Z" fill="#D62300" />
+    <circle cx="250" cy="108" r="8" fill="#FFCC00" stroke="#502314" stroke-width="2.5" />
+    <!-- Mini Anchor -->
+    <path d="M 250 104 L 250 112 M 246 109 Q 250 113 254 109" stroke="#502314" stroke-width="1.8" fill="none" stroke-linecap="round" />
+
+    <!-- Lettuce Wave (Crispy Green) -->
+    <path d="M 142 202 Q 160 215 178 202 Q 196 215 214 202 Q 232 215 250 202 Q 268 215 286 202 Q 304 215 322 202 Q 340 215 358 202" stroke="#2D7A32" stroke-width="8" fill="none" stroke-linecap="round" />
+
+    <!-- Melted Cheddar Cheese Layer (Corners Dropping) -->
+    <polygon points="145,212 355,212 340,240 270,224 220,245 180,222 155,238" fill="url(#cheeseGrad)" stroke="#502314" stroke-width="5" stroke-linejoin="round" />
+
+    <!-- Beef Patty (Thick Flame-Grilled Patty) -->
+    <rect x="142" y="224" width="216" height="34" rx="12" fill="url(#pattyGrad)" stroke="#502314" stroke-width="7" />
+    <!-- Grill Marks -->
+    <line x1="180" y1="228" x2="195" y2="254" stroke="#220B05" stroke-width="3" stroke-linecap="round" />
+    <line x1="220" y1="228" x2="235" y2="254" stroke="#220B05" stroke-width="3" stroke-linecap="round" />
+    <line x1="265" y1="228" x2="280" y2="254" stroke="#220B05" stroke-width="3" stroke-linecap="round" />
+    <line x1="305" y1="228" x2="320" y2="254" stroke="#220B05" stroke-width="3" stroke-linecap="round" />
+
+    <!-- Bottom Bun -->
+    <path d="M 152 264 C 152 292, 348 292, 348 264 Z" fill="url(#bunGrad)" stroke="#502314" stroke-width="7" stroke-linejoin="round" />
+  </g>
+
+  <!-- Ribbon Banner for English Wordmark -->
+  <g transform="translate(0, 10)">
+    <rect x="110" y="300" width="280" height="42" rx="10" fill="url(#redGrad)" stroke="#502314" stroke-width="5" />
+    <text x="250" y="329" font-family="'Impact', 'Arial Black', sans-serif" font-size="25" font-weight="900" fill="#FFFFFF" text-anchor="middle" letter-spacing="3.5">
+      CAPTAIN BRGR
+    </text>
+  </g>
+
+  <!-- Arabic Typography: كابتن برجر -->
+  <text x="250" y="388" font-family="'Cairo', 'Amiri', 'Tahoma', sans-serif" font-size="44" font-weight="900" fill="#502314" text-anchor="middle" letter-spacing="1">
+    كابتن برجر
+  </text>
+
+  <!-- Subtitle Tagline -->
+  <text x="250" y="420" font-family="'Cairo', system-ui, sans-serif" font-size="14.5" font-weight="800" fill="#D62300" text-anchor="middle" letter-spacing="1">
+    ★ برجر لحم مشوي وفراخ مقرمشة ★
+  </text>
+</svg>

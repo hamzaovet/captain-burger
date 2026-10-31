@@ -1,0 +1,112 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build & Release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+
+      - name: Install Node Dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Sync Capacitor Android
+        run: npx cap sync android
+
+      - name: Make Gradlew Executable
+        run: chmod +x ./android/gradlew
+
+      - name: Build Debug APK & Prepare Asset
+        env:
+          ANDROID_HOME: /usr/local/lib/android/sdk
+        run: |
+          cd android
+          ./gradlew :app:assembleDebug --stacktrace 2>&1 | tee ../gradle-build.log
+          cd ..
+          mkdir -p dist-apk
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist-apk/captain-burger.apk
+          mkdir -p public/downloads
+          cp dist-apk/captain-burger.apk public/downloads/captain-burger.apk
+          ls -lh dist-apk/captain-burger.apk
+
+      - name: Push Error Log on Failure
+        if: failure()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git checkout -B build-log
+          tail -n 300 gradle-build.log > gradle-error.txt || true
+          git add gradle-error.txt
+          git commit -m "chore: upload gradle error log" || true
+          git push origin build-log -f || true
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: captain-burger-apk
+          path: dist-apk/captain-burger.apk
+          if-no-files-found: error
+
+      - name: Create or Update GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        with:
+          tag_name: v1.0.0
+          name: "كابتن برجر - تطبيق الأندرويد الرسمي v1.0.0"
+          draft: false
+          prerelease: false
+          make_latest: true
+          body: |
+            ## 🍔 تطبيق كابتن برجر (Captain Burger) الرسمي للأندرويد v1.0.0
+            
+            أهلاً بكم في تطبيق **كابتن برجر (Captain Burger)** الرسمي للأندرويد — فروع الشيخ زايد (الحي العاشر) و 6 أكتوبر (غرب سوميد)!
+            
+            ### 🔥 مميزات التطبيق:
+            - تجربة طلب برجر سهلة وسريعة مع معمارية Burger King 4-Bottom-Tab (الرئيسية 🏠، المنيو 🍔، العروض 🔥، المكافآت 👑).
+            - تتبع لحظي لحالة الطلب خطوة بخطوة مع إشعارات صوتية فورية.
+            - قائمة الطعام كاملة: جوسي لوسي محشو شيدر، دبل سماش، كرسبي تشيكن، لودد فرايز، والميلك شيك.
+            - كوبونات وكود داخل الفرع لاكتساب النقاط واستبدالها بوجبات مجانية.
+            - محادثة مباشرة مع إدارة المطعم.
+            
+            ### 📱 طريقة التثبيت:
+            1. اضغط على رابط التحميل المباشر بالأسفل `captain-burger.apk`.
+            2. افتح الملف واختر **تثبيت (Install)**.
+            3. إذا ظهرت رسالة الأمان في هاتفك، اختر **السماح بالتثبيت من هذا المصدر**.
+            4. افتح التطبيق واستمتع بأشهى برجر مشوي عالفحم!
+          files: dist-apk/captain-burger.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and Push APK to Repo
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/downloads/captain-burger.apk
+          git commit -m "chore(release): host genuine compiled Captain Burger APK [skip ci]" || echo "No changes"
+          git push origin main || true
