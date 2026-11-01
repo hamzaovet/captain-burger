@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Generate the Official Luxury Business & Promo Card for Captain Burger (كابتن برجر)
-Features dual scannable QR codes (Web Storefront & Android APK), Burger King aesthetic, and official branding.
+Generate the Official Luxury Promo Card for Captain Burger (كابتن برجر)
+Zero emoji squares, 100% proper Arabic typography without bidi flips.
 """
 import os
 import qrcode
@@ -12,7 +12,9 @@ from PIL import Image, ImageDraw, ImageFont
 def ar(text):
     if not text:
         return ""
-    reshaped = arabic_reshaper.reshape(text)
+    # Strip any potential emoji or special symbols that Tahoma font cannot render
+    clean = text.replace("🔥", "").replace("🍔", "").replace("📱", "").replace("🛵", "").replace("👑", "").replace("⚡", "").replace("🎫", "").strip()
+    reshaped = arabic_reshaper.reshape(clean)
     return get_display(reshaped)
 
 # Target Paths
@@ -61,23 +63,27 @@ if os.path.exists(logo_path):
 
 # Fonts
 font_title_ar = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 36)
+font_title_en = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 32)
 font_sub_ar   = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 22)
-font_banner   = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 17)
+font_banner   = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 18)
 font_panel_h  = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 22)
 font_panel_sub= ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 16)
 font_panel_desc= ImageFont.truetype("C:/Windows/Fonts/tahoma.ttf", 14)
 font_pill     = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 16)
 font_footer   = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 17)
 
-# Main Title under header
-draw.text((W // 2, 245), ar("كابتن برجر  •  CAPTAIN BRGR"), font=font_title_ar, fill="#502314", anchor="mm")
+# Main Title under header: Drawn in 3 parts so English and Arabic never flip each other
+draw.text((W // 2 - 160, 245), ar("كابتن برجر"), font=font_title_ar, fill="#502314", anchor="mm")
+draw.text((W // 2, 245), "•", font=font_title_ar, fill="#D62300", anchor="mm")
+draw.text((W // 2 + 160, 245), "CAPTAIN BRGR", font=font_title_en, fill="#502314", anchor="mm")
+
 draw.text((W // 2, 288), ar("طعم البرجر الأصلي • برجر لحم مشوي عالفحم ودجاج كرسبي"), font=font_sub_ar, fill="#D62300", anchor="mm")
 draw.text((W // 2, 322), ar("فروعنا: الشيخ زايد (الحي العاشر) و 6 أكتوبر (غرب سوميد / وصلة دهشور)"), font=font_panel_desc, fill="#6B4226", anchor="mm")
 
 # Flame Promo Banner Pill
 banner_y = 355
-draw.rounded_rectangle([60, banner_y, W - 60, banner_y + 44], radius=22, fill="#D62300", outline="#502314", width=2)
-draw.text((W // 2, banner_y + 22), ar("اطلب أونلاين الآن أو حمّل تطبيق الأندرويد واستمتع بعروض كابتن برجر!"), font=font_banner, fill="#FFFFFF", anchor="mm")
+draw.rounded_rectangle([60, banner_y, W - 60, banner_y + 46], radius=23, fill="#D62300", outline="#502314", width=2)
+draw.text((W // 2, banner_y + 23), ar("اطلب أونلاين الآن أو حمّل تطبيق الأندرويد واستمتع بعروض وخصومات الكابتن!"), font=font_banner, fill="#FFFFFF", anchor="mm")
 
 # Dual QR Panels (Side by Side)
 panel_w = 410
@@ -100,7 +106,7 @@ img_apk_resized = img_apk_qr.resize((qr_box_size, qr_box_size))
 card.paste(img_apk_resized, (qr_x1, qr_y1))
 
 draw.text((panel_left_x + panel_w // 2, qr_y1 + qr_box_size + 30), ar("امسح الكود لتثبيت التطبيق مباشرة"), font=font_panel_sub, fill="#502314", anchor="mm")
-draw.text((panel_left_x + panel_w // 2, qr_y1 + qr_box_size + 56), ar("ملف APK أصلي وخفيف • تحديثات لحظية"), font=font_panel_desc, fill="#6B4226", anchor="mm")
+draw.text((panel_left_x + panel_w // 2, qr_y1 + qr_box_size + 56), ar("ملف أصلي وخفيف • تتبع لحظي وتنبيهات فورية"), font=font_panel_desc, fill="#6B4226", anchor="mm")
 
 # Action Pill
 pill_y1 = panel_y + panel_h - 60
@@ -141,4 +147,4 @@ draw.text((W // 2, H - 45), ar("تم تطوير النظام بواسطة شرك
 # Save Cards
 card.save(os.path.join(brain_dir, "captain-official-card.png"))
 card.save(os.path.join(burger_public, "captain-official-card.png"))
-print("[SUCCESS] Captain Burger Official Card generated with proper Arabic typography!")
+print("[SUCCESS] Captain Burger Official Card generated perfectly!")

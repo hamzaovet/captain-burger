@@ -109,25 +109,148 @@ const EXTRA_OPTIONS = [
   { nameAr: "صوص بيج تيستي إضافي 🥣", price: 20 },
 ];
 
+// Fallback Initial Products so menu never renders empty
+const INITIAL_BURGER_PRODUCTS: Product[] = [
+  {
+    id: "prod-1",
+    nameAr: "كابتن كلاسيك بيف برجر",
+    nameEn: "Classic Beef Burger",
+    category: "برجر لحم بلدي فاخر",
+    basePrice: 145,
+    sizes: JSON.stringify([
+      { nameAr: "سنجل (150 جم)", nameEn: "Single (150g)", price: 0 },
+      { nameAr: "دبل (300 جم)", nameEn: "Double (300g)", price: 65 },
+      { nameAr: "تريبل وحش (450 جم)", nameEn: "Triple (450g)", price: 120 },
+    ]),
+    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80",
+    description: "شريحة لحم بلدي طازجة 150 جم مشوية على اللهب مع جبنة شيدر أمريكية، خس مقرمش، طماطم، وصوص الكابتن السري في خبز بريوش طري.",
+    isAvailable: true,
+  },
+  {
+    id: "prod-2",
+    nameAr: "ساندوتش جوسي لوسي بيف (بركان جبنة)",
+    nameEn: "Juicy Lucy Beef Burger",
+    category: "برجر لحم بلدي فاخر",
+    basePrice: 185,
+    promoActive: true,
+    promoPrice: 185,
+    originalPrice: 215,
+    sizes: JSON.stringify([
+      { nameAr: "حجم قياسي (200 جم محشو)", nameEn: "Standard (200g)", price: 0 },
+      { nameAr: "دبل بيست محشو (400 جم)", nameEn: "Double Beast (400g)", price: 85 },
+    ]),
+    image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600&auto=format&fit=crop&q=80",
+    description: "المفاجأة! قطعة لحم 200 جم محشوة ومحكمة الإغلاق بقلب من الجبن الشيدر والبيكون المدخن، تنفجر بالجبنة السايحة فور أول قضمة.",
+    isAvailable: true,
+  },
+  {
+    id: "prod-3",
+    nameAr: "دبل كابتن سماش برجر",
+    nameEn: "Double Captain Smash",
+    category: "برجر لحم بلدي فاخر",
+    basePrice: 210,
+    originalPrice: 245,
+    image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=600&auto=format&fit=crop&q=80",
+    description: "قطعتين لحم 300 جم سماش مقرمشين عالجريل مع دبل جبنة أمريكية سايحة وخيار مخلل وصوص البرجر الخاص.",
+    isAvailable: true,
+  },
+  {
+    id: "prod-4",
+    nameAr: "ساندوتش كابتن فاير كرسبي تشيكن",
+    nameEn: "Captain Fire Crispy Chicken",
+    category: "برجر دجاج كرسبي",
+    basePrice: 165,
+    originalPrice: 190,
+    promoActive: true,
+    image: "https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?w=600&auto=format&fit=crop&q=80",
+    description: "صدر دجاج كامل مقرمش ومتبل بخلطة كابتن الحارة مع صوص الرانش والمايونيز والجبنة الشيدر السايحة في خبز بريوش طازج.",
+    isAvailable: true,
+  },
+  {
+    id: "prod-5",
+    nameAr: "كابتن بوكس العائلي العملاق (4 أفراد)",
+    nameEn: "Captain Monster Family Box",
+    category: "عروض وكومبو الكابتن",
+    basePrice: 499,
+    originalPrice: 620,
+    promoActive: true,
+    image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=600&auto=format&fit=crop&q=80",
+    description: "بوكس اللمة والصحاب الأقوى في مصر! 4 ساندوتشات كابتن برجر لحم وفراخ + بطاطس لودد عائلية + 4 بيبسي مثلج + صوصات الكابتن.",
+    isAvailable: true,
+  },
+  {
+    id: "prod-6",
+    nameAr: "كومبو الصحاب التوفيري (2 برجر + فرايز + 2 بيبسي)",
+    nameEn: "Friends Duo Deal Combo",
+    category: "عروض وكومبو الكابتن",
+    basePrice: 280,
+    originalPrice: 350,
+    promoActive: true,
+    image: "https://images.unsplash.com/photo-1610614819513-58e34989848b?w=600&auto=format&fit=crop&q=80",
+    description: "عرض التوفير الأقوى لشخصين: 2 ساندوتش برجر كلاسيك بيف + باكيت بطاطس كبير + 2 كانز بيبسي مثلج.",
+    isAvailable: true,
+  },
+  {
+    id: "prod-7",
+    nameAr: "بطاطس لودد فرايز غرقانة شيدر وبيكون",
+    nameEn: "Loaded Cheddar & Bacon Fries",
+    category: "بطاطس ومقبلات",
+    basePrice: 85,
+    image: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=600&auto=format&fit=crop&q=80",
+    description: "بطاطس ذهبية مقرمشة غارقة في صوص الجبنة الشيدر الأمريكي الساخن مع قطع بيف بيكون مدخن وهالبينو.",
+    isAvailable: true,
+  },
+  {
+    id: "prod-8",
+    nameAr: "أصابع جبنة موتزاريلا كرسبي (4 قطع)",
+    nameEn: "Crispy Mozzarella Sticks",
+    category: "بطاطس ومقبلات",
+    basePrice: 70,
+    image: "https://images.unsplash.com/photo-1548340742-b831a47face7?w=600&auto=format&fit=crop&q=80",
+    description: "أصابع الموتزاريلا الذهبية المقرمشة تقدم مع صوص المارينارا أو الرانش.",
+    isAvailable: true,
+  },
+  {
+    id: "prod-9",
+    nameAr: "ميلك شيك نوتيلا شوكولاتة مثلج",
+    nameEn: "Nutella Chocolate Milkshake",
+    category: "صوصات ومشروبات",
+    basePrice: 65,
+    image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=600&auto=format&fit=crop&q=80",
+    description: "ميلك شيك كثيف غني بشوكولاتة النوتيلا والكريمة المخفوقة وصوص الشوكولاتة.",
+    isAvailable: true,
+  },
+  {
+    id: "prod-10",
+    nameAr: "ميلك شيك لوتس كراميل مقرمش",
+    nameEn: "Lotus Caramel Milkshake",
+    category: "صوصات ومشروبات",
+    basePrice: 70,
+    image: "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=600&auto=format&fit=crop&q=80",
+    description: "ميلك شيك زبدة بسكويت Biscoff مع قطع بسكويت مقرمشة وصوص توفي كراميل.",
+    isAvailable: true,
+  },
+];
+
 export default function StorefrontPage() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>(INITIAL_BURGER_PRODUCTS);
   const [activeCategory, setActiveCategory] = useState("الكل");
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  // BK 4-Bottom-Tab state: "home" | "menu" | "offers" | "rewards"
+  // Active Bottom Tab: "home" | "menu" | "offers" | "rewards"
   const [activeTab, setActiveTab] = useState<"home" | "menu" | "offers" | "rewards">("home");
 
   // Hero carousel
   const [heroIndex, setHeroIndex] = useState(0);
   const heroTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Cart & Order
+  // Cart & Order State
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [orderType, setOrderType] = useState<"delivery" | "takeaway" | "dine_in">("delivery");
 
-  // Customer Account & Chat Modal
+  // Customer Account Modal
   const [customerModalOpen, setCustomerModalOpen] = useState(false);
 
   // Customization Modal
@@ -182,6 +305,28 @@ export default function StorefrontPage() {
   const nextHero = () => setHeroIndex((prev) => (prev + 1) % HERO_SLIDES.length);
   const prevHero = () => setHeroIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
 
+  // Smooth Scroll Helper
+  function scrollToSection(sectionId: string, tabName: "home" | "menu" | "offers" | "rewards") {
+    setActiveTab(tabName);
+    playSound("click");
+    const el = document.getElementById(sectionId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  // Handle URL Hash navigation on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash;
+      if (hash === "#menu-section") {
+        setTimeout(() => scrollToSection("menu-section", "menu"), 200);
+      } else if (hash === "#offers-section") {
+        setTimeout(() => scrollToSection("offers-section", "offers"), 200);
+      }
+    }
+  }, []);
+
   // Listen to Navbar Cart & Account Trigger Events
   useEffect(() => {
     const handleCartOpen = () => setCartOpen(true);
@@ -196,7 +341,7 @@ export default function StorefrontPage() {
     };
   }, []);
 
-  // Fetch Menu from API
+  // Fetch Menu from API (tries /api/menu first, then /api/products)
   useEffect(() => {
     fetchMenu();
     loadCartFromStorage();
@@ -204,16 +349,24 @@ export default function StorefrontPage() {
 
   async function fetchMenu() {
     try {
-      setLoading(true);
       const res = await fetch("/api/menu");
       if (res.ok) {
         const data = await res.json();
-        setProducts(data);
+        if (Array.isArray(data) && data.length > 0) {
+          setProducts(data);
+          return;
+        }
+      }
+      // Fallback to /api/products
+      const fallbackRes = await fetch("/api/products");
+      if (fallbackRes.ok) {
+        const fallbackData = await fallbackRes.json();
+        if (Array.isArray(fallbackData) && fallbackData.length > 0) {
+          setProducts(fallbackData);
+        }
       }
     } catch (err) {
-      console.error("Failed to load menu:", err);
-    } finally {
-      setLoading(false);
+      console.warn("Using initial burger products:", err);
     }
   }
 
@@ -507,568 +660,294 @@ export default function StorefrontPage() {
         </div>
       </div>
 
-      {/* 2. TAB CONTENT SWITCHER */}
-      {/* ============================================================ */}
-      {/* TAB 1: HOME (الرئيسية 🏠) */}
-      {/* ============================================================ */}
-      {activeTab === "home" && (
-        <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "16px" }}>
-          {/* Service Mode Selector */}
+      {/* 2. MAIN STOREFRONT CONTENT */}
+      <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "16px" }}>
+        
+        {/* SECTION 1: HERO PROMO CAROUSEL (Starts immediately, No awkward delivery bar) */}
+        <section
+          id="home-section"
+          style={{
+            position: "relative",
+            borderRadius: "28px",
+            overflow: "hidden",
+            backgroundColor: "#502314",
+            border: "4px solid #FFAE00",
+            boxShadow: "0 16px 40px rgba(80, 35, 20, 0.2)",
+            marginBottom: "32px",
+            minHeight: "420px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {/* Background Image with Gradient */}
           <div
             style={{
-              backgroundColor: "#FFFFFF",
-              borderRadius: "20px",
-              padding: "8px",
-              border: "2px solid rgba(80, 35, 20, 0.12)",
-              boxShadow: "0 6px 20px rgba(80, 35, 20, 0.05)",
-              display: "flex",
-              gap: "8px",
-              marginBottom: "20px",
+              position: "absolute",
+              inset: 0,
+              backgroundImage: `url(${HERO_SLIDES[heroIndex].image})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              transition: "all 0.6s ease",
             }}
           >
-            {[
-              { id: "delivery", label: "دليفري سريع", icon: <Bike size={18} /> },
-              { id: "takeaway", label: "استلام تيك أواي", icon: <Store size={18} /> },
-              { id: "dine_in", label: "طلب بالصالة", icon: <Utensils size={18} /> },
-            ].map((m) => {
-              const active = orderType === m.id;
-              return (
-                <button
-                  key={m.id}
-                  onClick={() => {
-                    setOrderType(m.id as any);
-                    playSound("click");
-                  }}
-                  style={{
-                    flex: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
-                    padding: "12px 8px",
-                    borderRadius: "14px",
-                    fontSize: "14px",
-                    fontWeight: 900,
-                    cursor: "pointer",
-                    border: "none",
-                    backgroundColor: active ? "#D62300" : "transparent",
-                    color: active ? "#FFFFFF" : "#502314",
-                    boxShadow: active ? "0 4px 12px rgba(214, 35, 0, 0.3)" : "none",
-                    transition: "all 0.2s",
-                  }}
-                >
-                  {m.icon}
-                  <span>{m.label}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Juicy Hero Carousel */}
-          <div
-            style={{
-              position: "relative",
-              borderRadius: "28px",
-              overflow: "hidden",
-              backgroundColor: "#502314",
-              border: "4px solid #FFAE00",
-              boxShadow: "0 16px 40px rgba(80, 35, 20, 0.2)",
-              marginBottom: "32px",
-              minHeight: "420px",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            {/* Background Image with Gradient */}
             <div
               style={{
                 position: "absolute",
                 inset: 0,
-                backgroundImage: `url(${HERO_SLIDES[heroIndex].image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                transition: "all 0.6s ease",
+                background: "linear-gradient(to left, rgba(80, 35, 20, 0.95) 0%, rgba(80, 35, 20, 0.85) 50%, rgba(80, 35, 20, 0.4) 100%)",
               }}
-            >
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  background: "linear-gradient(to left, rgba(80, 35, 20, 0.95) 0%, rgba(80, 35, 20, 0.85) 50%, rgba(80, 35, 20, 0.4) 100%)",
-                }}
-              />
-            </div>
-
-            {/* Slide Text Content */}
-            <div
-              style={{
-                position: "relative",
-                zIndex: 10,
-                padding: "36px 32px",
-                maxWidth: "600px",
-                color: "#FFFFFF",
-              }}
-            >
-              <span
-                style={{
-                  display: "inline-block",
-                  backgroundColor: "#D62300",
-                  color: "#FFFFFF",
-                  fontSize: "13px",
-                  fontWeight: 900,
-                  padding: "4px 12px",
-                  borderRadius: "100px",
-                  marginBottom: "12px",
-                  boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
-                }}
-              >
-                {HERO_SLIDES[heroIndex].badge}
-              </span>
-
-              <h1
-                style={{
-                  fontSize: "36px",
-                  fontWeight: 900,
-                  color: "#FFAE00",
-                  margin: "0 0 12px 0",
-                  lineHeight: 1.2,
-                }}
-              >
-                {HERO_SLIDES[heroIndex].title}
-              </h1>
-
-              <p
-                style={{
-                  fontSize: "15px",
-                  color: "#FAF3E8",
-                  lineHeight: 1.6,
-                  marginBottom: "20px",
-                  fontWeight: 600,
-                }}
-              >
-                {HERO_SLIDES[heroIndex].subtitle}
-              </p>
-
-              <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "24px" }}>
-                <span style={{ fontSize: "36px", fontWeight: 900, color: "#FFAE00" }}>
-                  {HERO_SLIDES[heroIndex].price} <span style={{ fontSize: "16px" }}>جنيه</span>
-                </span>
-                <span style={{ fontSize: "18px", color: "rgba(255,255,255,0.5)", textDecoration: "line-through" }}>
-                  {HERO_SLIDES[heroIndex].originalPrice} جنيه
-                </span>
-              </div>
-
-              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                <button
-                  onClick={() => {
-                    setActiveTab("menu");
-                    playSound("click");
-                  }}
-                  style={{
-                    backgroundColor: "#D62300",
-                    color: "#FFFFFF",
-                    fontWeight: 900,
-                    fontSize: "15px",
-                    padding: "12px 26px",
-                    borderRadius: "16px",
-                    border: "none",
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    boxShadow: "0 6px 18px rgba(214, 35, 0, 0.4)",
-                  }}
-                >
-                  <span>{HERO_SLIDES[heroIndex].cta}</span>
-                  <ArrowLeft size={18} />
-                </button>
-
-                <button
-                  onClick={() => {
-                    setActiveTab("offers");
-                    playSound("click");
-                  }}
-                  style={{
-                    backgroundColor: "rgba(255,255,255,0.12)",
-                    color: "#FFAE00",
-                    border: "1.5px solid #FFAE00",
-                    fontWeight: 800,
-                    fontSize: "14px",
-                    padding: "12px 20px",
-                    borderRadius: "16px",
-                    cursor: "pointer",
-                  }}
-                >
-                  كافة العروض 🔥
-                </button>
-              </div>
-            </div>
-
-            {/* Carousel Arrows */}
-            <button
-              onClick={prevHero}
-              style={{
-                position: "absolute",
-                right: "16px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                width: "42px",
-                height: "42px",
-                borderRadius: "50%",
-                backgroundColor: "rgba(0,0,0,0.5)",
-                color: "#FFFFFF",
-                border: "none",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                zIndex: 20,
-              }}
-            >
-              <ChevronRight size={24} />
-            </button>
-
-            <button
-              onClick={nextHero}
-              style={{
-                position: "absolute",
-                left: "16px",
-                top: "50%",
-                transform: "translateY(-50%)",
-                width: "42px",
-                height: "42px",
-                borderRadius: "50%",
-                backgroundColor: "rgba(0,0,0,0.5)",
-                color: "#FFFFFF",
-                border: "none",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                zIndex: 20,
-              }}
-            >
-              <ChevronLeft size={24} />
-            </button>
-
-            {/* Dots */}
-            <div
-              style={{
-                position: "absolute",
-                bottom: "16px",
-                left: "50%",
-                transform: "translateX(-50%)",
-                display: "flex",
-                gap: "8px",
-                zIndex: 20,
-              }}
-            >
-              {HERO_SLIDES.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setHeroIndex(idx)}
-                  style={{
-                    width: heroIndex === idx ? "28px" : "10px",
-                    height: "10px",
-                    borderRadius: "100px",
-                    backgroundColor: heroIndex === idx ? "#FFAE00" : "rgba(255,255,255,0.4)",
-                    border: "none",
-                    cursor: "pointer",
-                    transition: "all 0.3s",
-                  }}
-                />
-              ))}
-            </div>
+            />
           </div>
 
-          {/* Quick Categories Bar */}
-          <div style={{ marginBottom: "36px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
-              <h2 style={{ fontSize: "22px", fontWeight: 900, color: "#502314", margin: 0, display: "flex", alignItems: "center", gap: "8px" }}>
-                <span>تصفح الأقسام</span>
-                <span style={{ fontSize: "12px", backgroundColor: "#FFAE00", color: "#502314", padding: "2px 8px", borderRadius: "100px", fontWeight: 800 }}>
-                  طازج يومياً
-                </span>
-              </h2>
-
-              <button
-                onClick={() => setActiveTab("menu")}
-                style={{ background: "none", border: "none", color: "#D62300", fontWeight: 900, fontSize: "14px", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px" }}
-              >
-                <span>فتح المنيو بالكامل</span>
-                <ChevronLeft size={16} />
-              </button>
-            </div>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-                gap: "14px",
-              }}
-            >
-              {[
-                { name: "برجر لحم بلدي", icon: "🥩", count: "10 أصناف", cat: "برجر لحم بلدي فاخر" },
-                { name: "دجاج كرسبي", icon: "🍗", count: "5 أصناف", cat: "برجر دجاج كرسبي" },
-                { name: "كومبو وعروض", icon: "🎁", count: "توفير عالي", cat: "عروض وكومبو الكابتن" },
-                { name: "لودد فرايز ومقبلات", icon: "🍟", count: "غرقان شيدر", cat: "بطاطس ومقبلات" },
-                { name: "صوصات وميلك شيك", icon: "🥤", count: "نوتيلا ولوتس", cat: "صوصات ومشروبات" },
-              ].map((item, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    setActiveCategory(item.cat);
-                    setActiveTab("menu");
-                    playSound("click");
-                  }}
-                  style={{
-                    backgroundColor: "#FFFFFF",
-                    border: "2px solid rgba(80, 35, 20, 0.1)",
-                    borderRadius: "20px",
-                    padding: "16px",
-                    textAlign: "right",
-                    cursor: "pointer",
-                    boxShadow: "0 4px 14px rgba(80, 35, 20, 0.04)",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    minHeight: "100px",
-                    transition: "all 0.2s",
-                  }}
-                >
-                  <div style={{ fontSize: "32px", marginBottom: "8px" }}>{item.icon}</div>
-                  <div>
-                    <h3 style={{ fontSize: "16px", fontWeight: 900, color: "#502314", margin: "0 0 2px 0" }}>
-                      {item.name}
-                    </h3>
-                    <span style={{ fontSize: "12px", color: "#7E6554", fontWeight: 600 }}>{item.count}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Best Sellers Hits Section */}
-          <div style={{ marginBottom: "36px" }}>
-            <div style={{ marginBottom: "16px" }}>
-              <span style={{ fontSize: "12px", fontWeight: 900, color: "#D62300", textTransform: "uppercase" }}>
-                الأكثر مبيعاً هذا الأسبوع
-              </span>
-              <h2 style={{ fontSize: "24px", fontWeight: 900, color: "#502314", margin: "4px 0 0 0" }}>
-                أطباق الكابتن المميزة 🔥
-              </h2>
-            </div>
-
-            {loading ? (
-              <div style={{ textAlign: "center", padding: "60px" }}>
-                <Loader2 size={32} color="#D62300" className="animate-spin" />
-              </div>
-            ) : (
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                  gap: "20px",
-                }}
-              >
-                {products.slice(0, 6).map((prod) => (
-                  <div
-                    key={prod.id}
-                    style={{
-                      backgroundColor: "#FFFFFF",
-                      borderRadius: "24px",
-                      overflow: "hidden",
-                      border: "2px solid rgba(80, 35, 20, 0.1)",
-                      boxShadow: "0 8px 24px rgba(80, 35, 20, 0.06)",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <div style={{ position: "relative", height: "200px", backgroundColor: "#F5EBDC" }}>
-                      <img
-                        src={prod.image || "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600"}
-                        alt={prod.nameAr}
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                      />
-                      {prod.promoActive && (
-                        <div
-                          style={{
-                            position: "absolute",
-                            top: "12px",
-                            right: "12px",
-                            backgroundColor: "#D62300",
-                            color: "#FFFFFF",
-                            fontSize: "11px",
-                            fontWeight: 900,
-                            padding: "4px 10px",
-                            borderRadius: "100px",
-                          }}
-                        >
-                          عرض خاص 🔥
-                        </div>
-                      )}
-                      <div
-                        style={{
-                          position: "absolute",
-                          bottom: "10px",
-                          left: "10px",
-                          backgroundColor: "rgba(80, 35, 20, 0.85)",
-                          color: "#FFAE00",
-                          fontSize: "11px",
-                          fontWeight: 800,
-                          padding: "3px 8px",
-                          borderRadius: "8px",
-                        }}
-                      >
-                        {prod.category}
-                      </div>
-                    </div>
-
-                    <div style={{ padding: "18px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                      <div>
-                        <h3 style={{ fontSize: "18px", fontWeight: 900, color: "#502314", margin: "0 0 6px 0" }}>
-                          {prod.nameAr}
-                        </h3>
-                        <p style={{ fontSize: "13px", color: "#7E6554", lineHeight: 1.5, margin: "0 0 16px 0" }}>
-                          {prod.description}
-                        </p>
-                      </div>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          paddingTop: "12px",
-                          borderTop: "1px solid rgba(80, 35, 20, 0.1)",
-                        }}
-                      >
-                        <div>
-                          <span style={{ fontSize: "20px", fontWeight: 900, color: "#D62300" }}>
-                            {getProductPrice(prod)} <span style={{ fontSize: "12px" }}>ج.م</span>
-                          </span>
-                          {prod.originalPrice && prod.originalPrice > prod.basePrice && (
-                            <span style={{ fontSize: "13px", color: "#A89485", textDecoration: "line-through", marginRight: "8px" }}>
-                              {prod.originalPrice} ج
-                            </span>
-                          )}
-                        </div>
-
-                        <button
-                          onClick={() => {
-                            if (prod.sizes || prod.modifiers) {
-                              openCustomizeModal(prod);
-                            } else {
-                              addToCartDirect(prod);
-                            }
-                          }}
-                          style={{
-                            backgroundColor: "#D62300",
-                            color: "#FFFFFF",
-                            border: "none",
-                            borderRadius: "12px",
-                            padding: "8px 16px",
-                            fontSize: "13px",
-                            fontWeight: 900,
-                            cursor: "pointer",
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "6px",
-                            boxShadow: "0 4px 10px rgba(214, 35, 0, 0.3)",
-                          }}
-                        >
-                          <Plus size={16} />
-                          <span>أضف للطلب</span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Captain Rewards Teaser Banner */}
+          {/* Slide Text Content */}
           <div
             style={{
-              background: "linear-gradient(135deg, #502314 0%, #7A361E 100%)",
-              borderRadius: "28px",
-              padding: "32px",
+              position: "relative",
+              zIndex: 10,
+              padding: "36px 32px",
+              maxWidth: "600px",
               color: "#FFFFFF",
-              border: "3px solid #FFAE00",
-              boxShadow: "0 12px 30px rgba(80, 35, 20, 0.15)",
-              display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "20px",
             }}
           >
-            <div>
-              <div
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  backgroundColor: "#FFAE00",
-                  color: "#502314",
-                  fontSize: "12px",
-                  fontWeight: 900,
-                  padding: "4px 12px",
-                  borderRadius: "100px",
-                  marginBottom: "12px",
-                }}
-              >
-                <Award size={14} />
-                <span>برنامج الولاء - كابتن كوينز 👑</span>
-              </div>
-              <h3 style={{ fontSize: "24px", fontWeight: 900, margin: "0 0 8px 0", color: "#FAF3E8" }}>
-                اجمع كوينز مع كل أوردر واستبدلها بوجبات مجانية!
-              </h3>
-              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)", margin: 0, maxWidth: "600px", lineHeight: 1.5 }}>
-                كل 100 جنيه بتطلبها بتديك 10 كابتن كوينز في حسابك تقدر تستبدلهم ببطاطس لودد، برجر مجاني، أو خصومات فورية داخل فروعنا في زايد وأكتوبر.
-              </p>
-            </div>
-
-            <button
-              onClick={() => {
-                setActiveTab("rewards");
-                playSound("click");
-              }}
+            <span
               style={{
-                backgroundColor: "#FFAE00",
-                color: "#502314",
-                border: "none",
-                borderRadius: "16px",
-                padding: "14px 24px",
-                fontSize: "14px",
+                display: "inline-block",
+                backgroundColor: "#D62300",
+                color: "#FFFFFF",
+                fontSize: "13px",
                 fontWeight: 900,
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                boxShadow: "0 6px 16px rgba(0,0,0,0.2)",
-                whiteSpace: "nowrap",
+                padding: "4px 12px",
+                borderRadius: "100px",
+                marginBottom: "12px",
+                boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
               }}
             >
-              <QrCode size={18} />
-              <span>عرض كودي ومكافآتي</span>
+              {HERO_SLIDES[heroIndex].badge}
+            </span>
+
+            <h1
+              style={{
+                fontSize: "36px",
+                fontWeight: 900,
+                color: "#FFAE00",
+                margin: "0 0 12px 0",
+                lineHeight: 1.2,
+              }}
+            >
+              {HERO_SLIDES[heroIndex].title}
+            </h1>
+
+            <p
+              style={{
+                fontSize: "15px",
+                color: "#FAF3E8",
+                lineHeight: 1.6,
+                marginBottom: "20px",
+                fontWeight: 600,
+              }}
+            >
+              {HERO_SLIDES[heroIndex].subtitle}
+            </p>
+
+            <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "24px" }}>
+              <span style={{ fontSize: "36px", fontWeight: 900, color: "#FFAE00" }}>
+                {HERO_SLIDES[heroIndex].price} <span style={{ fontSize: "16px" }}>جنيه</span>
+              </span>
+              <span style={{ fontSize: "18px", color: "rgba(255,255,255,0.5)", textDecoration: "line-through" }}>
+                {HERO_SLIDES[heroIndex].originalPrice} جنيه
+              </span>
+            </div>
+
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+              <button
+                onClick={() => scrollToSection("menu-section", "menu")}
+                style={{
+                  backgroundColor: "#D62300",
+                  color: "#FFFFFF",
+                  fontWeight: 900,
+                  fontSize: "15px",
+                  padding: "12px 26px",
+                  borderRadius: "16px",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  boxShadow: "0 6px 18px rgba(214, 35, 0, 0.4)",
+                }}
+              >
+                <span>{HERO_SLIDES[heroIndex].cta}</span>
+                <ArrowLeft size={18} />
+              </button>
+
+              <button
+                onClick={() => scrollToSection("offers-section", "offers")}
+                style={{
+                  backgroundColor: "rgba(255,255,255,0.12)",
+                  color: "#FFAE00",
+                  border: "1.5px solid #FFAE00",
+                  fontWeight: 800,
+                  fontSize: "14px",
+                  padding: "12px 20px",
+                  borderRadius: "16px",
+                  cursor: "pointer",
+                }}
+              >
+                كافة العروض 🔥
+              </button>
+            </div>
+          </div>
+
+          {/* Carousel Arrows */}
+          <button
+            onClick={prevHero}
+            style={{
+              position: "absolute",
+              right: "16px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              width: "42px",
+              height: "42px",
+              borderRadius: "50%",
+              backgroundColor: "rgba(0,0,0,0.5)",
+              color: "#FFFFFF",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 20,
+            }}
+          >
+            <ChevronRight size={24} />
+          </button>
+
+          <button
+            onClick={nextHero}
+            style={{
+              position: "absolute",
+              left: "16px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              width: "42px",
+              height: "42px",
+              borderRadius: "50%",
+              backgroundColor: "rgba(0,0,0,0.5)",
+              color: "#FFFFFF",
+              border: "none",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 20,
+            }}
+          >
+            <ChevronLeft size={24} />
+          </button>
+
+          {/* Dots */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "16px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "flex",
+              gap: "8px",
+              zIndex: 20,
+            }}
+          >
+            {HERO_SLIDES.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setHeroIndex(idx)}
+                style={{
+                  width: heroIndex === idx ? "28px" : "10px",
+                  height: "10px",
+                  borderRadius: "100px",
+                  backgroundColor: heroIndex === idx ? "#FFAE00" : "rgba(255,255,255,0.4)",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "all 0.3s",
+                }}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION 2: QUICK CATEGORIES BAR */}
+        <div style={{ marginBottom: "36px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+            <h2 style={{ fontSize: "22px", fontWeight: 900, color: "#502314", margin: 0, display: "flex", alignItems: "center", gap: "8px" }}>
+              <span>تصفح الأقسام</span>
+              <span style={{ fontSize: "12px", backgroundColor: "#FFAE00", color: "#502314", padding: "2px 8px", borderRadius: "100px", fontWeight: 800 }}>
+                طازج يومياً
+              </span>
+            </h2>
+
+            <button
+              onClick={() => scrollToSection("menu-section", "menu")}
+              style={{ background: "none", border: "none", color: "#D62300", fontWeight: 900, fontSize: "14px", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px" }}
+            >
+              <span>فتح المنيو بالكامل</span>
+              <ChevronLeft size={16} />
             </button>
           </div>
-        </main>
-      )}
 
-      {/* ============================================================ */}
-      {/* TAB 2: MENU (المنيو 🍔) */}
-      {/* ============================================================ */}
-      {activeTab === "menu" && (
-        <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "20px 16px" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "14px",
+            }}
+          >
+            {[
+              { name: "برجر لحم بلدي", icon: "🥩", count: "10 أصناف", cat: "برجر لحم بلدي فاخر" },
+              { name: "دجاج كرسبي", icon: "🍗", count: "5 أصناف", cat: "برجر دجاج كرسبي" },
+              { name: "كومبو وعروض", icon: "🎁", count: "توفير عالي", cat: "عروض وكومبو الكابتن" },
+              { name: "لودد فرايز ومقبلات", icon: "🍟", count: "غرقان شيدر", cat: "بطاطس ومقبلات" },
+              { name: "صوصات وميلك شيك", icon: "🥤", count: "نوتيلا ولوتس", cat: "صوصات ومشروبات" },
+            ].map((item, idx) => (
+              <button
+                key={idx}
+                onClick={() => {
+                  setActiveCategory(item.cat);
+                  scrollToSection("menu-section", "menu");
+                }}
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  border: "2px solid rgba(80, 35, 20, 0.1)",
+                  borderRadius: "20px",
+                  padding: "16px",
+                  textAlign: "right",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 14px rgba(80, 35, 20, 0.04)",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  minHeight: "100px",
+                  transition: "all 0.2s",
+                }}
+              >
+                <div style={{ fontSize: "32px", marginBottom: "8px" }}>{item.icon}</div>
+                <div>
+                  <h3 style={{ fontSize: "16px", fontWeight: 900, color: "#502314", margin: "0 0 2px 0" }}>
+                    {item.name}
+                  </h3>
+                  <span style={{ fontSize: "12px", color: "#7E6554", fontWeight: 600 }}>{item.count}</span>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* SECTION 3: THE FULL BURGER MENU GRID */}
+        <section id="menu-section" style={{ marginBottom: "48px", paddingTop: "20px" }}>
           {/* Header & Search */}
           <div style={{ marginBottom: "24px" }}>
-            <h1 style={{ fontSize: "28px", fontWeight: 900, color: "#502314", margin: "0 0 6px 0" }}>
+            <h2 style={{ fontSize: "28px", fontWeight: 900, color: "#502314", margin: "0 0 6px 0" }}>
               قائمة طعام كابتن برجر 🍔
-            </h1>
+            </h2>
             <p style={{ fontSize: "14px", color: "#7E6554", margin: "0 0 18px 0" }}>
               برجر لحم بلدي 100% طازج عالفحم، دجاج كرسبي سوبر مقرمش، لودد فرايز وصوصات خاصة
             </p>
@@ -1159,144 +1038,135 @@ export default function StorefrontPage() {
           </div>
 
           {/* Product Grid */}
-          {loading ? (
-            <div style={{ textAlign: "center", padding: "80px" }}>
-              <Loader2 size={36} color="#D62300" className="animate-spin" />
-              <p style={{ marginTop: "12px", fontWeight: 700, color: "#7E6554" }}>جاري تحميل منيو الكابتن...</p>
-            </div>
-          ) : filteredProducts.length === 0 ? (
-            <div
-              style={{
-                backgroundColor: "#FFFFFF",
-                borderRadius: "24px",
-                padding: "60px 20px",
-                textAlign: "center",
-                border: "2px dashed rgba(80,35,20,0.2)",
-              }}
-            >
-              <h3 style={{ fontSize: "18px", fontWeight: 900, color: "#502314" }}>لم يتم العثور على نتائج</h3>
-              <p style={{ fontSize: "13px", color: "#7E6554", marginTop: "6px" }}>جرب البحث بكلمة أخرى أو تصفح قسماً آخر.</p>
-            </div>
-          ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                gap: "20px",
-              }}
-            >
-              {filteredProducts.map((prod) => (
-                <div
-                  key={prod.id}
-                  style={{
-                    backgroundColor: "#FFFFFF",
-                    borderRadius: "24px",
-                    overflow: "hidden",
-                    border: "2px solid rgba(80, 35, 20, 0.1)",
-                    boxShadow: "0 6px 20px rgba(80, 35, 20, 0.05)",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <div style={{ position: "relative", height: "190px", backgroundColor: "#F5EBDC" }}>
-                    <img
-                      src={prod.image || "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600"}
-                      alt={prod.nameAr}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                    />
-                    {prod.promoActive && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "10px",
-                          right: "10px",
-                          backgroundColor: "#D62300",
-                          color: "#FFFFFF",
-                          fontSize: "11px",
-                          fontWeight: 900,
-                          padding: "3px 8px",
-                          borderRadius: "100px",
-                        }}
-                      >
-                        عرض توفير 🔥
-                      </div>
-                    )}
-                  </div>
-
-                  <div style={{ padding: "16px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                    <div>
-                      <h3 style={{ fontSize: "17px", fontWeight: 900, color: "#502314", margin: "0 0 2px 0" }}>
-                        {prod.nameAr}
-                      </h3>
-                      <h4 style={{ fontSize: "11px", fontWeight: 700, color: "rgba(80,35,20,0.5)", margin: "0 0 8px 0" }}>
-                        {prod.nameEn}
-                      </h4>
-                      <p style={{ fontSize: "12px", color: "#7E6554", lineHeight: 1.5, margin: "0 0 14px 0" }}>
-                        {prod.description}
-                      </p>
-                    </div>
-
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "20px",
+            }}
+          >
+            {filteredProducts.map((prod) => (
+              <div
+                key={prod.id}
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  borderRadius: "24px",
+                  overflow: "hidden",
+                  border: "2px solid rgba(80, 35, 20, 0.1)",
+                  boxShadow: "0 6px 20px rgba(80, 35, 20, 0.05)",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <div style={{ position: "relative", height: "190px", backgroundColor: "#F5EBDC" }}>
+                  <img
+                    src={prod.image || "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600"}
+                    alt={prod.nameAr}
+                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  />
+                  {prod.promoActive && (
                     <div
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        paddingTop: "12px",
-                        borderTop: "1px solid rgba(80, 35, 20, 0.1)",
+                        position: "absolute",
+                        top: "10px",
+                        right: "10px",
+                        backgroundColor: "#D62300",
+                        color: "#FFFFFF",
+                        fontSize: "11px",
+                        fontWeight: 900,
+                        padding: "3px 8px",
+                        borderRadius: "100px",
                       }}
                     >
-                      <div>
-                        <span style={{ fontSize: "19px", fontWeight: 900, color: "#D62300" }}>
-                          {getProductPrice(prod)} <span style={{ fontSize: "12px" }}>ج.م</span>
-                        </span>
-                        {prod.originalPrice && prod.originalPrice > prod.basePrice && (
-                          <span style={{ fontSize: "12px", color: "#A89485", textDecoration: "line-through", marginRight: "6px" }}>
-                            {prod.originalPrice} ج
-                          </span>
-                        )}
-                      </div>
-
-                      <button
-                        onClick={() => {
-                          if (prod.sizes || prod.modifiers) {
-                            openCustomizeModal(prod);
-                          } else {
-                            addToCartDirect(prod);
-                          }
-                        }}
-                        style={{
-                          backgroundColor: "#D62300",
-                          color: "#FFFFFF",
-                          border: "none",
-                          borderRadius: "12px",
-                          padding: "8px 14px",
-                          fontSize: "12px",
-                          fontWeight: 900,
-                          cursor: "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
-                          boxShadow: "0 4px 10px rgba(214, 35, 0, 0.25)",
-                        }}
-                      >
-                        <Plus size={15} />
-                        <span>{prod.sizes ? "تخصيص" : "أضف"}</span>
-                      </button>
+                      عرض توفير 🔥
                     </div>
+                  )}
+                  <div
+                    style={{
+                      position: "absolute",
+                      bottom: "10px",
+                      left: "10px",
+                      backgroundColor: "rgba(80, 35, 20, 0.85)",
+                      color: "#FFAE00",
+                      fontSize: "11px",
+                      fontWeight: 800,
+                      padding: "3px 8px",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    {prod.category}
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </main>
-      )}
 
-      {/* ============================================================ */}
-      {/* TAB 3: OFFERS & COUPONS (العروض 🔥) */}
-      {/* ============================================================ */}
-      {activeTab === "offers" && (
-        <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "20px 16px" }}>
+                <div style={{ padding: "16px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                  <div>
+                    <h3 style={{ fontSize: "17px", fontWeight: 900, color: "#502314", margin: "0 0 2px 0" }}>
+                      {prod.nameAr}
+                    </h3>
+                    <h4 style={{ fontSize: "11px", fontWeight: 700, color: "rgba(80,35,20,0.5)", margin: "0 0 8px 0" }}>
+                      {prod.nameEn}
+                    </h4>
+                    <p style={{ fontSize: "12px", color: "#7E6554", lineHeight: 1.5, margin: "0 0 14px 0" }}>
+                      {prod.description}
+                    </p>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      paddingTop: "12px",
+                      borderTop: "1px solid rgba(80, 35, 20, 0.1)",
+                    }}
+                  >
+                    <div>
+                      <span style={{ fontSize: "19px", fontWeight: 900, color: "#D62300" }}>
+                        {getProductPrice(prod)} <span style={{ fontSize: "12px" }}>ج.م</span>
+                      </span>
+                      {prod.originalPrice && prod.originalPrice > prod.basePrice && (
+                        <span style={{ fontSize: "12px", color: "#A89485", textDecoration: "line-through", marginRight: "6px" }}>
+                          {prod.originalPrice} ج
+                        </span>
+                      )}
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        if (prod.sizes || prod.modifiers) {
+                          openCustomizeModal(prod);
+                        } else {
+                          addToCartDirect(prod);
+                        }
+                      }}
+                      style={{
+                        backgroundColor: "#D62300",
+                        color: "#FFFFFF",
+                        border: "none",
+                        borderRadius: "12px",
+                        padding: "8px 14px",
+                        fontSize: "12px",
+                        fontWeight: 900,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                        boxShadow: "0 4px 10px rgba(214, 35, 0, 0.25)",
+                      }}
+                    >
+                      <Plus size={15} />
+                      <span>{prod.sizes ? "تخصيص" : "أضف"}</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* SECTION 4: COUPONS & SPECIAL OFFERS */}
+        <section id="offers-section" style={{ marginBottom: "48px", paddingTop: "20px" }}>
           {/* Flash Deal Bar */}
           <div
             style={{
@@ -1353,14 +1223,14 @@ export default function StorefrontPage() {
             </div>
           </div>
 
-          <h2 style={{ fontSize: "22px", fontWeight: 900, color: "#502314", marginBottom: "16px" }}>
+          <h2 style={{ fontSize: "24px", fontWeight: 900, color: "#502314", marginBottom: "16px" }}>
             كوبونات وخصومات الكابتن 🎫
           </h2>
 
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
               gap: "18px",
               marginBottom: "36px",
             }}
@@ -1478,15 +1348,10 @@ export default function StorefrontPage() {
               </div>
             ))}
           </div>
-        </main>
-      )}
+        </section>
 
-      {/* ============================================================ */}
-      {/* TAB 4: REWARDS & MY IN-STORE CODE (المكافآت 👑) */}
-      {/* ============================================================ */}
-      {activeTab === "rewards" && (
-        <main style={{ maxWidth: "800px", margin: "0 auto", padding: "20px 16px" }}>
-          {/* Member Card */}
+        {/* SECTION 5: LOYALTY REWARDS & MY CODE */}
+        <section id="rewards-section" style={{ marginBottom: "48px", paddingTop: "20px" }}>
           <div
             style={{
               backgroundColor: "#502314",
@@ -1514,9 +1379,9 @@ export default function StorefrontPage() {
                 >
                   عضو كابتن مميز 👑
                 </span>
-                <h1 style={{ fontSize: "26px", fontWeight: 900, margin: "0 0 4px 0", color: "#FAF3E8" }}>
+                <h2 style={{ fontSize: "26px", fontWeight: 900, margin: "0 0 4px 0", color: "#FAF3E8" }}>
                   كابتن كوينز (Captain Coins)
-                </h1>
+                </h2>
                 <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", margin: 0 }}>
                   رقم العضوية: <span style={{ fontFamily: "monospace", color: "#FFAE00" }}>CPT-2026-984</span>
                 </p>
@@ -1558,7 +1423,6 @@ export default function StorefrontPage() {
               border: "2px solid rgba(80, 35, 20, 0.12)",
               textAlign: "center",
               boxShadow: "0 8px 24px rgba(80, 35, 20, 0.05)",
-              marginBottom: "28px",
             }}
           >
             <div style={{ maxWidth: "300px", margin: "0 auto" }}>
@@ -1619,8 +1483,9 @@ export default function StorefrontPage() {
               </div>
             </div>
           </div>
-        </main>
-      )}
+        </section>
+
+      </main>
 
       {/* 3. FLOATING CART PILL */}
       {cart.length > 0 && (
@@ -1728,19 +1593,16 @@ export default function StorefrontPage() {
           }}
         >
           {[
-            { id: "home", label: "الرئيسية", icon: "🏠" },
-            { id: "menu", label: "المنيو", icon: "🍔" },
-            { id: "offers", label: "العروض", icon: "🔥" },
-            { id: "rewards", label: "المكافآت", icon: "👑" },
+            { id: "home", label: "الرئيسية", icon: "🏠", section: "home-section" },
+            { id: "menu", label: "المنيو", icon: "🍔", section: "menu-section" },
+            { id: "offers", label: "العروض", icon: "🔥", section: "offers-section" },
+            { id: "rewards", label: "المكافآت", icon: "👑", section: "rewards-section" },
           ].map((tab) => {
             const active = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
-                onClick={() => {
-                  setActiveTab(tab.id as any);
-                  playSound("click");
-                }}
+                onClick={() => scrollToSection(tab.section, tab.id as any)}
                 style={{
                   background: "none",
                   border: "none",
@@ -1973,7 +1835,7 @@ export default function StorefrontPage() {
         </div>
       )}
 
-      {/* 6. CART DRAWER & CHECKOUT */}
+      {/* 6. CART DRAWER & CHECKOUT (Service Mode is here where it belongs!) */}
       {cartOpen && (
         <div
           style={{
@@ -2058,6 +1920,56 @@ export default function StorefrontPage() {
                 </div>
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                  
+                  {/* Service Mode Selector IN CART */}
+                  <div
+                    style={{
+                      backgroundColor: "#FFFFFF",
+                      borderRadius: "16px",
+                      padding: "6px",
+                      border: "1.5px solid rgba(80, 35, 20, 0.12)",
+                      display: "flex",
+                      gap: "6px",
+                    }}
+                  >
+                    {[
+                      { id: "delivery", label: "دليفري", icon: <Bike size={16} /> },
+                      { id: "takeaway", label: "تيك أواي", icon: <Store size={16} /> },
+                      { id: "dine_in", label: "صالة", icon: <Utensils size={16} /> },
+                    ].map((m) => {
+                      const active = orderType === m.id;
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          onClick={() => {
+                            setOrderType(m.id as any);
+                            playSound("click");
+                          }}
+                          style={{
+                            flex: 1,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "6px",
+                            padding: "10px 4px",
+                            borderRadius: "12px",
+                            fontSize: "13px",
+                            fontWeight: 900,
+                            cursor: "pointer",
+                            border: "none",
+                            backgroundColor: active ? "#D62300" : "transparent",
+                            color: active ? "#FFFFFF" : "#502314",
+                            transition: "all 0.2s",
+                          }}
+                        >
+                          {m.icon}
+                          <span>{m.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
                   {/* Items List */}
                   <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                     {cart.map((item, idx) => (
@@ -2197,7 +2109,7 @@ export default function StorefrontPage() {
                     }}
                   >
                     <span style={{ fontSize: "12px", fontWeight: 900, color: "#D62300", textTransform: "uppercase" }}>
-                      بيانات التوصيل 🛵
+                      بيانات العميل 👤
                     </span>
 
                     <div>
@@ -2265,6 +2177,22 @@ export default function StorefrontPage() {
                           />
                         </div>
                       </>
+                    )}
+
+                    {orderType === "dine_in" && (
+                      <div>
+                        <label style={{ fontSize: "11px", fontWeight: 900, color: "#502314", display: "block", marginBottom: "4px" }}>
+                          رقم الطاولة في الصالة *
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="مثال: طاولة 4"
+                          value={tableNumber}
+                          onChange={(e) => setTableNumber(e.target.value)}
+                          style={{ width: "100%", padding: "10px", backgroundColor: "#F5EBDC", border: "1px solid rgba(80,35,20,0.15)", borderRadius: "10px", fontSize: "13px", boxSizing: "border-box" }}
+                        />
+                      </div>
                     )}
 
                     {/* Summary */}
