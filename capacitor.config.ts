@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'كابتن برجر',
   webDir: 'public',
   server: {
-    url: 'https://captain-burger.vercel.app',
+    url: 'https://captain-burger-five.vercel.app',
     cleartext: true,
   },
   android: {

@@ -107,7 +107,7 @@ export async function POST(req: Request) {
         body.paymentMethod === "instapay" ? "إنستاباي ⚡" :
         body.paymentMethod === "wallet" ? "محفظة كاش 📱" : "فيزا / كارت 💳";
 
-      const origin = req.headers.get("origin") || "https://captain-burger.vercel.app";
+      const origin = req.headers.get("origin") || "https://captain-burger-five.vercel.app";
       const receiptUrl = `${origin}/receipt/${order.id}`;
 
       const waText =
