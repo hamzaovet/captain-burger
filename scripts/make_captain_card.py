@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Generate the Official Luxury Business & Promo Card for Captain Burger (كابتن برجر)
 Features dual scannable QR codes (Web Storefront & Android APK), Burger King aesthetic, and official branding.
@@ -36,11 +37,10 @@ img_web_qr.save(os.path.join(brain_dir, "captain-web-qr.png"))
 img_apk_qr.save(os.path.join(brain_dir, "captain-apk-qr.png"))
 img_web_qr.save(os.path.join(burger_public, "captain-web-qr.png"))
 img_apk_qr.save(os.path.join(burger_public, "captain-apk-qr.png"))
-print("Generated QR codes successfully!")
 
-# Card Dimensions (1000 x 1240)
+# Card Dimensions (1000 x 1280)
 W = 1000
-H = 1240
+H = 1280
 
 # Base Sesame Cream Canvas (#F5EBDC)
 card = Image.new("RGBA", (W, H), (245, 235, 220, 255))
@@ -51,46 +51,45 @@ draw.rectangle([0, 0, W - 1, H - 1], outline="#502314", width=12)
 draw.rectangle([20, 20, W - 21, H - 21], outline="#D62300", width=4)
 
 # Top Header Brand Bar (#502314)
-draw.rectangle([24, 24, W - 25, 200], fill="#502314")
+draw.rectangle([24, 24, W - 25, 210], fill="#502314")
 
 # Load and paste logo
 logo_path = os.path.join(burger_public, "logo.png")
 if os.path.exists(logo_path):
-    logo = Image.open(logo_path).convert("RGBA").resize((150, 150))
-    card.paste(logo, (W // 2 - 75, 36), logo)
+    logo = Image.open(logo_path).convert("RGBA").resize((160, 160))
+    card.paste(logo, (W // 2 - 80, 36), logo)
 
 # Fonts
-font_title_en = ImageFont.truetype("C:/Windows/Fonts/impact.ttf", 38)
 font_title_ar = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 36)
-font_sub_ar   = ImageFont.truetype("C:/Windows/Fonts/tahoma.ttf", 20)
-font_banner   = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 16)
+font_sub_ar   = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 22)
+font_banner   = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 17)
 font_panel_h  = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 22)
-font_panel_sub= ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 15)
-font_panel_desc= ImageFont.truetype("C:/Windows/Fonts/tahoma.ttf", 13)
-font_pill     = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 15)
-font_footer   = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 16)
+font_panel_sub= ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 16)
+font_panel_desc= ImageFont.truetype("C:/Windows/Fonts/tahoma.ttf", 14)
+font_pill     = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 16)
+font_footer   = ImageFont.truetype("C:/Windows/Fonts/tahomabd.ttf", 17)
 
 # Main Title under header
-draw.text((W // 2, 230), "CAPTAIN BRGR • كابتن برجر", font=font_title_ar, fill="#502314", anchor="mm")
-draw.text((W // 2, 275), ar("طعم البرجر الأصلي • برجر لحم مشوي محشي جبنة وفراخ مقرمشة"), font=font_sub_ar, fill="#D62300", anchor="mm")
-draw.text((W // 2, 308), ar("الشيخ زايد (الحي العاشر) • 6 أكتوبر (غرب سوميد / وصلة دهشور)"), font=font_panel_desc, fill="#6B4226", anchor="mm")
+draw.text((W // 2, 245), ar("كابتن برجر  •  CAPTAIN BRGR"), font=font_title_ar, fill="#502314", anchor="mm")
+draw.text((W // 2, 288), ar("طعم البرجر الأصلي • برجر لحم مشوي عالفحم ودجاج كرسبي"), font=font_sub_ar, fill="#D62300", anchor="mm")
+draw.text((W // 2, 322), ar("فروعنا: الشيخ زايد (الحي العاشر) و 6 أكتوبر (غرب سوميد / وصلة دهشور)"), font=font_panel_desc, fill="#6B4226", anchor="mm")
 
 # Flame Promo Banner Pill
-banner_y = 340
-draw.rounded_rectangle([70, banner_y, W - 70, banner_y + 42], radius=21, fill="#D62300", outline="#502314", width=2)
-draw.text((W // 2, banner_y + 21), ar("🔥 اطلب أونلاين الآن أو حمّل تطبيق الأندرويد واستمتع بعروض الكابتن والكومبو! 🔥"), font=font_banner, fill="#FFFFFF", anchor="mm")
+banner_y = 355
+draw.rounded_rectangle([60, banner_y, W - 60, banner_y + 44], radius=22, fill="#D62300", outline="#502314", width=2)
+draw.text((W // 2, banner_y + 22), ar("اطلب أونلاين الآن أو حمّل تطبيق الأندرويد واستمتع بعروض كابتن برجر!"), font=font_banner, fill="#FFFFFF", anchor="mm")
 
 # Dual QR Panels (Side by Side)
-panel_w = 405
-panel_h = 560
-panel_y = 410
+panel_w = 410
+panel_h = 570
+panel_y = 425
 
 # Left Panel: Android App APK
-panel_left_x = 70
+panel_left_x = 65
 draw.rounded_rectangle([panel_left_x, panel_y, panel_left_x + panel_w, panel_y + panel_h], radius=24, fill="#FFFFFF", outline="#502314", width=3)
 # Panel Header
 draw.rounded_rectangle([panel_left_x + 3, panel_y + 3, panel_left_x + panel_w - 3, panel_y + 55], radius=20, fill="#D62300")
-draw.text((panel_left_x + panel_w // 2, panel_y + 28), ar("📱 تطبيق الأندرويد الرسمي"), font=font_panel_h, fill="#FFFFFF", anchor="mm")
+draw.text((panel_left_x + panel_w // 2, panel_y + 28), ar("تطبيق الأندرويد الرسمي"), font=font_panel_h, fill="#FFFFFF", anchor="mm")
 
 # QR Box
 qr_box_size = 230
@@ -101,19 +100,19 @@ img_apk_resized = img_apk_qr.resize((qr_box_size, qr_box_size))
 card.paste(img_apk_resized, (qr_x1, qr_y1))
 
 draw.text((panel_left_x + panel_w // 2, qr_y1 + qr_box_size + 30), ar("امسح الكود لتثبيت التطبيق مباشرة"), font=font_panel_sub, fill="#502314", anchor="mm")
-draw.text((panel_left_x + panel_w // 2, qr_y1 + qr_box_size + 56), ar("ملف APK أصيل وخفيف • تحديثات لحظية"), font=font_panel_desc, fill="#6B4226", anchor="mm")
+draw.text((panel_left_x + panel_w // 2, qr_y1 + qr_box_size + 56), ar("ملف APK أصلي وخفيف • تحديثات لحظية"), font=font_panel_desc, fill="#6B4226", anchor="mm")
 
 # Action Pill
 pill_y1 = panel_y + panel_h - 60
 draw.rounded_rectangle([panel_left_x + 30, pill_y1, panel_left_x + panel_w - 30, pill_y1 + 42], radius=21, fill="#D62300")
-draw.text((panel_left_x + panel_w // 2, pill_y1 + 21), ar("حمّل التطبيق الآن ⚡"), font=font_pill, fill="#FFFFFF", anchor="mm")
+draw.text((panel_left_x + panel_w // 2, pill_y1 + 21), ar("حمّل التطبيق الآن"), font=font_pill, fill="#FFFFFF", anchor="mm")
 
 # Right Panel: Web Storefront
-panel_right_x = W - 70 - panel_w
+panel_right_x = W - 65 - panel_w
 draw.rounded_rectangle([panel_right_x, panel_y, panel_right_x + panel_w, panel_y + panel_h], radius=24, fill="#FFFFFF", outline="#502314", width=3)
 # Panel Header
 draw.rounded_rectangle([panel_right_x + 3, panel_y + 3, panel_right_x + panel_w - 3, panel_y + 55], radius=20, fill="#502314")
-draw.text((panel_right_x + panel_w // 2, panel_y + 28), ar("🌐 المتجر الإلكتروني السريع"), font=font_panel_h, fill="#FFFFFF", anchor="mm")
+draw.text((panel_right_x + panel_w // 2, panel_y + 28), ar("المتجر الإلكتروني السريع"), font=font_panel_h, fill="#FFFFFF", anchor="mm")
 
 # QR Box
 qr_x2 = panel_right_x + (panel_w - qr_box_size) // 2
@@ -127,19 +126,19 @@ draw.text((panel_right_x + panel_w // 2, qr_y2 + qr_box_size + 56), ar("دليف
 
 # Action Pill
 draw.rounded_rectangle([panel_right_x + 30, pill_y1, panel_right_x + panel_w - 30, pill_y1 + 42], radius=21, fill="#502314")
-draw.text((panel_right_x + panel_w // 2, pill_y1 + 21), ar("تصفح المنيو واطلب 🍔"), font=font_pill, fill="#FFFFFF", anchor="mm")
+draw.text((panel_right_x + panel_w // 2, pill_y1 + 21), ar("تصفح المنيو واطلب"), font=font_pill, fill="#FFFFFF", anchor="mm")
 
 # Hotline & Delivery Footer Bar
-footer_y = H - 220
-draw.rounded_rectangle([70, footer_y, W - 70, footer_y + 115], radius=20, fill="#FFFFFF", outline="#502314", width=2)
-draw.text((W // 2, footer_y + 28), ar("📞 الخط الساخن والطلبات: 01206002168 | 01117776349 | 01018804888"), font=font_footer, fill="#502314", anchor="mm")
-draw.text((W // 2, footer_y + 60), ar("خدمة توصيل سريعة لكافة أحياء الشيخ زايد و 6 أكتوبر • يومياً 12 ظهراً حتى 3 صباحاً"), font=font_panel_desc, fill="#6B4226", anchor="mm")
-draw.text((W // 2, footer_y + 90), "https://captain-burger.vercel.app", font=font_panel_desc, fill="#D62300", anchor="mm")
+footer_y = H - 240
+draw.rounded_rectangle([60, footer_y, W - 60, footer_y + 120], radius=20, fill="#FFFFFF", outline="#502314", width=2)
+draw.text((W // 2, footer_y + 30), ar("الخط الساخن والطلبات: 01206002168 | 01117776349 | 01018804888"), font=font_footer, fill="#502314", anchor="mm")
+draw.text((W // 2, footer_y + 64), ar("خدمة توصيل سريعة لكافة أحياء الشيخ زايد و 6 أكتوبر • يومياً 12 ظهراً حتى 3 صباحاً"), font=font_panel_desc, fill="#6B4226", anchor="mm")
+draw.text((W // 2, footer_y + 94), "https://captain-burger.vercel.app", font=font_panel_desc, fill="#D62300", anchor="mm")
 
 # Subtle Dev Credit Bar
-draw.text((W // 2, H - 45), ar("تم تطوير النظام بواسطة شركة أوركا للحلول البرمجية والخدمات السحابية 🐋"), font=font_panel_desc, fill="#8C6E56", anchor="mm")
+draw.text((W // 2, H - 45), ar("تم تطوير النظام بواسطة شركة أوركا للحلول البرمجية والخدمات السحابية"), font=font_panel_desc, fill="#8C6E56", anchor="mm")
 
 # Save Cards
 card.save(os.path.join(brain_dir, "captain-official-card.png"))
 card.save(os.path.join(burger_public, "captain-official-card.png"))
-print("[SUCCESS] Captain Burger Official Card generated!")
+print("[SUCCESS] Captain Burger Official Card generated with proper Arabic typography!")

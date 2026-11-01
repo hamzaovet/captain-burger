@@ -25,13 +25,13 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [activeTab, setActiveTab] = useState<"general" | "whatsapp" | "integrations">("general");
 
   const [settings, setSettings] = useState({
-    restaurantName: "مطعم الوجبة الشهية",
-    phone: "01019845220",
-    hotlines: "01019845220 | 01111316817 | 01111316439",
-    address: "6 أكتوبر - الحي الثاني - شارع جيل 2000 - المجاورة الثانية، عمارة 661 - مقابل مدرسة أم المؤمنين",
+    restaurantName: "مطعم كابتن برجر",
+    phone: "01206002168",
+    hotlines: "01206002168 | 01111316817 | 01111316439",
+    address: "فروع الشيخ زايد و6 أكتوبر - شارع جيل 2000 - المجاورة الثانية، عمارة 661 - مقابل مدرسة أم المؤمنين",
     soundsEnabled: true,
     whatsappOrdersEnabled: true,
-    ownerWhatsapp: "01019845220",
+    ownerWhatsapp: "01206002168",
     saro5WebhookUrl: "",
     talabatWebhookUrl: "",
   });
@@ -49,13 +49,13 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       if (res.ok) {
         const data = await res.json();
         setSettings({
-          restaurantName: data.restaurantName || "مطعم الوجبة الشهية",
-          phone: data.phone || "01019845220",
-          hotlines: data.hotlines || "01019845220 | 01111316817 | 01111316439",
-          address: data.address || "6 أكتوبر - الحي الثاني - شارع جيل 2000 - المجاورة الثانية، عمارة 661 - مقابل مدرسة أم المؤمنين",
+          restaurantName: data.restaurantName || "مطعم كابتن برجر",
+          phone: data.phone || "01206002168",
+          hotlines: data.hotlines || "01206002168 | 01111316817 | 01111316439",
+          address: data.address || "فروع الشيخ زايد و6 أكتوبر - شارع جيل 2000 - المجاورة الثانية، عمارة 661 - مقابل مدرسة أم المؤمنين",
           soundsEnabled: data.soundsEnabled ?? true,
           whatsappOrdersEnabled: data.whatsappOrdersEnabled ?? true,
-          ownerWhatsapp: data.ownerWhatsapp || "01019845220",
+          ownerWhatsapp: data.ownerWhatsapp || "01206002168",
           saro5WebhookUrl: data.saro5WebhookUrl || "",
           talabatWebhookUrl: data.talabatWebhookUrl || "",
         });
@@ -138,7 +138,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 {t("إعدادات النظام والتشغيل", "System & Operations Settings")}
               </h2>
               <p style={{ fontSize: "11px", color: "#F59E0B", margin: "2px 0 0" }}>
-                مطعم الوجبة الشهية — 6 أكتوبر
+                مطعم كابتن برجر — 6 أكتوبر
               </p>
             </div>
           </div>

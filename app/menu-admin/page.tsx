@@ -68,7 +68,7 @@ export default function MenuAdminPage() {
     if (found?.nameEn) return found.nameEn;
     const map: Record<string, string> = {
       "الكل": "All",
-      "عروض الوجبة الشهية": "Promos and Deals",
+      "عروض كابتن برجر": "Promos and Deals",
       "مشويات الشواية": "Rotisserie and Grills",
       "صواني اللمة والعيلة": "Family Trays",
       "الشاورما السوري والعروض": "Syrian Shawarma",

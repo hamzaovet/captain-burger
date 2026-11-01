@@ -140,11 +140,11 @@ export function printThermalReceipt(order: PrintableOrder) {
     </head>
     <body onload="window.print(); setTimeout(() => window.close(), 500);">
       <div class="text-center">
-        <img src="${typeof window !== 'undefined' ? window.location.origin : ''}/logo.jpg" alt="الوجبة الشهية" style="width: 44mm; max-width: 170px; height: auto; margin: 0 auto 6px; display: block; border-radius: 50%;" />
-        <div style="font-size: 15px; font-weight: 900; letter-spacing: 0.5px;">مطعم الوجبة الشهية 🔥</div>
+        <img src="${typeof window !== 'undefined' ? window.location.origin : ''}/logo.jpg" alt="كابتن برجر" style="width: 44mm; max-width: 170px; height: auto; margin: 0 auto 6px; display: block; border-radius: 50%;" />
+        <div style="font-size: 15px; font-weight: 900; letter-spacing: 0.5px;">مطعم كابتن برجر 🔥</div>
         <div style="font-size: 11px; font-weight: 700; color: #333;">أكل بطعم بيحبه قلبك • GOOD FOOD BETTER MOOD</div>
-        <div style="font-size: 11px; color: #222; margin-top: 2px;">6 أكتوبر - الحي الثاني - شارع جيل 2000 (مقابل مدرسة أم المؤمنين)</div>
-        <div style="font-size: 12px; font-weight: bold; margin-top: 2px;">هاتف وواتساب: 01019845220 - 01111316817 - 01111316439</div>
+        <div style="font-size: 11px; color: #222; margin-top: 2px;">فروع الشيخ زايد و6 أكتوبر - شارع جيل 2000 (مقابل مدرسة أم المؤمنين)</div>
+        <div style="font-size: 12px; font-weight: bold; margin-top: 2px;">هاتف وواتساب: 01206002168 - 01111316817 - 01111316439</div>
       </div>
 
       <div class="double-divider"></div>
@@ -254,8 +254,8 @@ export function printThermalReceipt(order: PrintableOrder) {
       </div>
 
       <div class="footer-note">
-        شكراً لطلبكم من مطعم الوجبة الشهية 🍗🔥<br/>
-        6 أكتوبر - الحي الثاني - شارع جيل 2000<br/>
+        شكراً لطلبكم من مطعم كابتن برجر 🍗🔥<br/>
+        فروع الشيخ زايد و6 أكتوبر - شارع جيل 2000<br/>
         
       </div>
     </body>
@@ -374,11 +374,11 @@ export default function ThermalReceiptModal({ order, onClose }: ThermalReceiptMo
           >
             {/* Store Banner */}
             <div style={{ textAlign: "center", marginBottom: "12px" }}>
-              <img src="/logo.jpg" alt="الوجبة الشهية" style={{ width: "80px", height: "80px", borderRadius: "50%", objectFit: "cover", margin: "0 auto 8px", display: "block", border: "2px solid #DC2626" }} />
-              <div style={{ fontSize: "15px", fontWeight: 900, color: "#180e06" }}>مطعم الوجبة الشهية 🔥</div>
+              <img src="/logo.jpg" alt="كابتن برجر" style={{ width: "80px", height: "80px", borderRadius: "50%", objectFit: "cover", margin: "0 auto 8px", display: "block", border: "2px solid #DC2626" }} />
+              <div style={{ fontSize: "15px", fontWeight: 900, color: "#180e06" }}>مطعم كابتن برجر 🔥</div>
               <div style={{ fontSize: "11px", fontWeight: 700, color: "#DC2626" }}>أكل بطعم بيحبه قلبك • GOOD FOOD BETTER MOOD</div>
-              <div style={{ fontSize: "11.5px", color: "#444", fontWeight: 700, marginTop: "2px" }}>6 أكتوبر - الحي الثاني - شارع جيل 2000 (مقابل مدرسة أم المؤمنين)</div>
-              <div style={{ fontSize: "12px", fontWeight: 700, marginTop: "2px" }}>هاتف: 01019845220 - 01111316817 - 01111316439</div>
+              <div style={{ fontSize: "11.5px", color: "#444", fontWeight: 700, marginTop: "2px" }}>فروع الشيخ زايد و6 أكتوبر - شارع جيل 2000 (مقابل مدرسة أم المؤمنين)</div>
+              <div style={{ fontSize: "12px", fontWeight: 700, marginTop: "2px" }}>هاتف: 01206002168 - 01111316817 - 01111316439</div>
             </div>
 
             <div style={{ borderTop: "2px solid #000", margin: "10px 0" }} />
@@ -530,9 +530,9 @@ export default function ThermalReceiptModal({ order, onClose }: ThermalReceiptMo
             <div style={{ borderTop: "1px dashed #666", margin: "8px 0" }} />
 
             <div style={{ textAlign: "center", fontSize: "11px", color: "#555" }}>
-              شكراً لطلبكم من مطعم الوجبة الشهية 🍗🔥<br/>
-              6 أكتوبر - الحي الثاني - شارع جيل 2000 (مقابل مدرسة أم المؤمنين)<br/>
-              هواتفنا: 01019845220 • 01111316817 • 01111316439<br/>
+              شكراً لطلبكم من مطعم كابتن برجر 🍗🔥<br/>
+              فروع الشيخ زايد و6 أكتوبر - شارع جيل 2000 (مقابل مدرسة أم المؤمنين)<br/>
+              هواتفنا: 01206002168 • 01111316817 • 01111316439<br/>
               تم تطوير النظام بواسطة شركة أوركا للحلول البرمجية والخدمات السحابية
             </div>
           </div>

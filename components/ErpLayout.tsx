@@ -72,7 +72,7 @@ export default function ErpLayout({ children, activeItem }: ErpLayoutProps) {
     }}>
 
       {/* ══════════════════════════════════════════════════════════
-          SIDEBAR — الوجبة الشهية Operations Hub (Light Warm Ivory)
+          SIDEBAR — كابتن برجر Operations Hub (Light Warm Ivory)
       ══════════════════════════════════════════════════════════ */}
       {/* Mobile Backdrop Overlay */}
       {isMobile && mobileMenuOpen && (
@@ -149,7 +149,7 @@ export default function ErpLayout({ children, activeItem }: ErpLayoutProps) {
                 border: "1.5px solid #C6873E",
                 boxShadow: "0 2px 8px rgba(198, 135, 62, 0.2)",
               }}>
-                <img src="/logo.jpg" alt="الوجبة الشهية" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                <img src="/logo.png" alt="كابتن برجر" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
               </div>
               <div>
                 <div style={{
@@ -159,7 +159,7 @@ export default function ErpLayout({ children, activeItem }: ErpLayoutProps) {
                   fontFamily: "var(--font-playfair), Georgia, serif",
                   lineHeight: 1.15,
                 }}>
-                  الوجبة الشهية
+                  كابتن برجر
                 </div>
                 <div style={{
                   fontSize: "10.5px",
@@ -374,7 +374,7 @@ export default function ErpLayout({ children, activeItem }: ErpLayoutProps) {
       ══════════════════════════════════════════════════════════ */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0, width: "100%" }}>
 
-        {/* ── Top Bar — الوجبة الشهية Light Theme ── */}
+        {/* ── Top Bar — كابتن برجر Light Theme ── */}
         <header style={{
           minHeight: "64px",
           padding: isMobile ? "10px 14px" : "0 28px",

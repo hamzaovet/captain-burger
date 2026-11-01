@@ -76,7 +76,7 @@ export default function LoginPage() {
       dir={dir}
       style={{
         minHeight: "100vh",
-        background: "radial-gradient(ellipse at top, #7F1D1D 0%, #300602 45%, #150300 100%)",
+        background: "radial-gradient(ellipse at top, #502314 0%, #2D1107 50%, #150702 100%)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -115,7 +115,7 @@ export default function LoginPage() {
         <span>{lang === "ar" ? "English 🌐" : "عربي 🌐"}</span>
       </button>
 
-      {/* ── Brand الوجبة الشهية ── */}
+      {/* ── Brand كابتن برجر ── */}
       <div style={{ textAlign: "center", marginBottom: "22px" }}>
         <div
           style={{
@@ -133,11 +133,11 @@ export default function LoginPage() {
           }}
         >
           <img
-            src="/logo.jpg"
-            alt="الوجبة الشهية Logo"
+            src="/logo.png"
+            alt="Captain Burger Logo"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
             onError={(e) => {
-              (e.target as HTMLImageElement).src = "/logo.jpg";
+              (e.target as HTMLImageElement).src = "/logo.png";
             }}
           />
         </div>
@@ -151,7 +151,7 @@ export default function LoginPage() {
             textShadow: "0 2px 10px rgba(0,0,0,0.5)",
           }}
         >
-          مطعم الوجبة الشهية 🔥🍗
+          كابتن برجر 🍔🔥
         </h1>
         <p
           style={{
@@ -161,7 +161,7 @@ export default function LoginPage() {
             fontWeight: 700,
           }}
         >
-          {t("منظومة إدارة وتشغيل الفروع والمبيعات السحابية - فرع 6 أكتوبر", "Cloud ERP & Operations Platform - Cairo Branch")}
+          {t("منظومة إدارة وتشغيل الفروع والمبيعات السحابية - فروع الشيخ زايد و6 أكتوبر", "Cloud ERP & Operations Platform - Cairo Branch")}
         </p>
       </div>
 

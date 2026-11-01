@@ -557,7 +557,7 @@ export default function DashboardOrdersPage() {
         : "تم استلامه وجاري تنفيذه 📋";
 
     const msg =
-      `مرحباً ${order.customerName} من الوجبة الشهية 🧇🍰\n` +
+      `مرحباً ${order.customerName} من كابتن برجر 🧇🍰\n` +
       `بخصوص أوردر رقم: #${order.orderNumber}\n` +
       `الحالة الحالية: ${statusLabel}\n` +
       `الإجمالي المطلوب: ${order.total} ج.م ${order.paymentMethod === "cash" ? "(كاش 💵)" : "(مدفوع إلكترونياً 💳)"}\n` +
@@ -588,7 +588,7 @@ export default function DashboardOrdersPage() {
     const mapsUrl = `https://maps.google.com/?q=${addressQuery}`;
 
     const msg =
-      `🛵 *بيان توصيل أوردر جديد — الوجبة الشهية 🧇🍰*\n\n` +
+      `🛵 *بيان توصيل أوردر جديد — كابتن برجر 🧇🍰*\n\n` +
       `أهلاً كابتن ${captName}، تفاصيل الطلب للتوصيل الفوري:\n` +
       `━━━━━━━━━━━━━━━━━━━\n` +
       `🏷️ *أوردر رقم:* #${order.orderNumber}\n` +
@@ -2458,7 +2458,7 @@ export default function DashboardOrdersPage() {
                                     cpt.phone.replace(/[^0-9]/g, "").startsWith("0")
                                       ? "2" + cpt.phone.replace(/[^0-9]/g, "")
                                       : cpt.phone.replace(/[^0-9]/g, "")
-                                  }?text=${encodeURIComponent("مرحباً كابتن " + cpt.name + " من إدارة الوجبة الشهية 🧇🍰")}`}
+                                  }?text=${encodeURIComponent("مرحباً كابتن " + cpt.name + " من إدارة كابتن برجر 🧇🍰")}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   title="مراسلة الكابتن عبر واتساب"
@@ -2614,7 +2614,7 @@ export default function DashboardOrdersPage() {
                 }}
               >
                 <span style={{ fontSize: "12px", color: "#7E5E49", fontWeight: 700 }}>
-                  الوجبة الشهية Fleet Intelligence Engine 🛵
+                  كابتن برجر Fleet Intelligence Engine 🛵
                 </span>
                 <button
                   type="button"
@@ -3021,7 +3021,7 @@ export default function DashboardOrdersPage() {
                 }}
               >
                 <span style={{ fontSize: "12px", color: "#7E5E49", fontWeight: 700 }}>
-                  الوجبة الشهية Cairo Dynamic Delivery Zones & Pricing Engine 🛵
+                  كابتن برجر Cairo Dynamic Delivery Zones & Pricing Engine 🛵
                 </span>
                 <button
                   type="button"
@@ -3151,7 +3151,7 @@ export default function DashboardOrdersPage() {
                         selectedChatPhone.replace(/[^0-9]/g, "").startsWith("0")
                           ? "2" + selectedChatPhone.replace(/[^0-9]/g, "")
                           : selectedChatPhone.replace(/[^0-9]/g, "")
-                      }?text=${encodeURIComponent("مرحباً من فريق الوجبة الشهية 🧇🍰")}`}
+                      }?text=${encodeURIComponent("مرحباً من فريق كابتن برجر 🧇🍰")}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       title="مراسلة العميل عبر واتساب مباشرة"

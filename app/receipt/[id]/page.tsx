@@ -135,7 +135,7 @@ export default function DigitalReceiptPage({ params }: { params: Promise<{ id: s
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: "6px", color: "#F59E0B", textDecoration: "none", fontSize: "13px", fontWeight: 800 }}>
             <ArrowRight size={16} />
-            <span>الوجبة الشهية • العودة للمنيو</span>
+            <span>كابتن برجر • العودة للمنيو</span>
           </Link>
 
           <button
@@ -151,11 +151,11 @@ export default function DigitalReceiptPage({ params }: { params: Promise<{ id: s
         <div style={{ background: "#FFFFFF", color: "#180e06", borderRadius: "22px", padding: "24px 20px", boxShadow: "0 16px 45px rgba(0,0,0,0.7)" }}>
           {/* Logo & Header */}
           <div style={{ textAlign: "center", marginBottom: "14px" }}>
-            <img src="/logo.jpg" alt="الوجبة الشهية" style={{ width: "85px", height: "85px", borderRadius: "50%", objectFit: "cover", margin: "0 auto 8px", display: "block", border: "2px solid #8B0000" }} />
-            <div style={{ fontSize: "16px", fontWeight: 900, color: "#180e06" }}>مطعم الوجبة الشهية • AL WAGBA AL SHAHIA</div>
+            <img src="/logo.jpg" alt="كابتن برجر" style={{ width: "85px", height: "85px", borderRadius: "50%", objectFit: "cover", margin: "0 auto 8px", display: "block", border: "2px solid #8B0000" }} />
+            <div style={{ fontSize: "16px", fontWeight: 900, color: "#180e06" }}>مطعم كابتن برجر • CAPTAIN BURGER</div>
             <div style={{ fontSize: "11px", fontWeight: 800, color: "#8B0000" }}>أكل بطعم بيحبه قلبك • أكل بطعم مختلف</div>
-            <div style={{ fontSize: "11.5px", color: "#444", fontWeight: 700, marginTop: "2px" }}>6 أكتوبر - الحي الثاني - شارع جيل 2000 (عمارة 661 مقابل مدرسة أم المؤمنين)</div>
-            <div style={{ fontSize: "12.5px", fontWeight: 800, marginTop: "2px" }}>هاتف الطلبات: 01019845220 - 01111316817</div>
+            <div style={{ fontSize: "11.5px", color: "#444", fontWeight: 700, marginTop: "2px" }}>فروع الشيخ زايد و6 أكتوبر - شارع جيل 2000 (عمارة 661 مقابل مدرسة أم المؤمنين)</div>
+            <div style={{ fontSize: "12.5px", fontWeight: 800, marginTop: "2px" }}>هاتف الطلبات: 01206002168 - 01111316817</div>
           </div>
 
           <div style={{ borderTop: "2px solid #180e06", margin: "12px 0" }} />
@@ -399,9 +399,9 @@ export default function DigitalReceiptPage({ params }: { params: Promise<{ id: s
           </div>
 
           <div style={{ textAlign: "center", fontSize: "11px", color: "#666", marginTop: "14px", lineHeight: 1.6 }}>
-            شكراً لطلبكم من مطعم الوجبة الشهية 🍗🔥<br />
-            6 أكتوبر - الحي الثاني - شارع جيل 2000 (مقابل مدرسة أم المؤمنين)<br />
-            هواتفنا: 01019845220 • 01111316817 • 01111316439<br />
+            شكراً لطلبكم من مطعم كابتن برجر 🍗🔥<br />
+            فروع الشيخ زايد و6 أكتوبر - شارع جيل 2000 (مقابل مدرسة أم المؤمنين)<br />
+            هواتفنا: 01206002168 • 01111316817 • 01111316439<br />
             <a
               href="https://wa.me/201018671000"
               target="_blank"

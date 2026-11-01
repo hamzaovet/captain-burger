@@ -9,10 +9,9 @@ import { ALL_DELIVERY_ZONES, DEFAULT_ZONE, ZoneItem } from "@/lib/zones";
 import {
   ShoppingCart, X, Plus, Minus, Search,
   MapPin, Phone, Clock, CheckCircle2, Loader2,
-  Bike, CreditCard, ChefHat, ChevronRight, ChevronLeft,
-  Sparkles, Flame, Gift, Store, Utensils,
-  Share2, ShieldCheck, Tag, Heart, Info, ArrowLeft, ArrowRight,
-  Award, QrCode, Ticket, Check, Compass, Star, Percent
+  Bike, Store, Utensils, ChevronRight, ChevronLeft,
+  Sparkles, Flame, Gift, ArrowLeft, ArrowRight,
+  Award, QrCode, Ticket, Check, Star, AlertCircle
 } from "lucide-react";
 
 interface Product {
@@ -49,7 +48,7 @@ const HERO_SLIDES = [
     id: "monster-box",
     badge: "وفر 120 جنيه 🔥 العرض الأقوى",
     title: "كابتن بوكس العائلي العملاق",
-    subtitle: "4 ساندوتشات كابتن برجر لحم مشوي عالفحم ودجاج كرسبي + لودد فرايز عائلي بالجبنة والبيكون + 4 كانز بيبسي مثلج + صوصات الكابتن الخاصة.",
+    subtitle: "4 ساندوتشات كابتن برجر لحم مشوي عالفحم ودجاج كرسبي + لودد فرايز عائلي بالشيدر والبيكون + 4 كانز بيبسي مثلج + صوصات الكابتن الخاصة.",
     price: 499,
     originalPrice: 620,
     note: "يكفي حتى 5 أفراد - وجبة اللمة والصحاب الأوفر",
@@ -123,28 +122,6 @@ export default function StorefrontPage() {
   const [heroIndex, setHeroIndex] = useState(0);
   const heroTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Touch Swipe for Carousel
-  const touchStartXRef = useRef<number | null>(null);
-  const touchEndXRef = useRef<number | null>(null);
-
-  function handleTouchStart(e: React.TouchEvent) {
-    touchStartXRef.current = e.touches[0].clientX;
-  }
-  function handleTouchMove(e: React.TouchEvent) {
-    touchEndXRef.current = e.touches[0].clientX;
-  }
-  function handleTouchEnd() {
-    if (touchStartXRef.current === null || touchEndXRef.current === null) return;
-    const diff = touchStartXRef.current - touchEndXRef.current;
-    if (diff > 40) {
-      nextHero();
-    } else if (diff < -40) {
-      prevHero();
-    }
-    touchStartXRef.current = null;
-    touchEndXRef.current = null;
-  }
-
   // Cart & Order
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
@@ -152,7 +129,6 @@ export default function StorefrontPage() {
 
   // Customer Account & Chat Modal
   const [customerModalOpen, setCustomerModalOpen] = useState(false);
-  const [chatWidgetOpen, setChatWidgetOpen] = useState(false);
 
   // Customization Modal
   const [customizingProduct, setCustomizingProduct] = useState<Product | null>(null);
@@ -176,7 +152,7 @@ export default function StorefrontPage() {
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [couponApplied, setCouponApplied] = useState(false);
 
-  // Flash Deal Timer (Seconds)
+  // Flash Deal Timer
   const [flashSeconds, setFlashSeconds] = useState(14520);
 
   useEffect(() => {
@@ -203,12 +179,8 @@ export default function StorefrontPage() {
     };
   }, []);
 
-  const nextHero = () => {
-    setHeroIndex((prev) => (prev + 1) % HERO_SLIDES.length);
-  };
-  const prevHero = () => {
-    setHeroIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
-  };
+  const nextHero = () => setHeroIndex((prev) => (prev + 1) % HERO_SLIDES.length);
+  const prevHero = () => setHeroIndex((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
 
   // Listen to Navbar Cart & Account Trigger Events
   useEffect(() => {
@@ -313,7 +285,6 @@ export default function StorefrontPage() {
       sizeTitle = selectedSize.nameAr;
     }
 
-    // Add extras cost
     selectedExtras.forEach((extraName) => {
       const found = EXTRA_OPTIONS.find((e) => e.nameAr === extraName);
       if (found) unitPrice += found.price;
@@ -457,37 +428,80 @@ export default function StorefrontPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#F5EBDC] text-[#502314] pb-28 font-sans selection:bg-[#D62300] selection:text-white">
-      {/* 1. TOP HEADER / SERVICE SELECTOR & APP DOWNLOAD BAR */}
-      <div className="bg-[#502314] text-[#FAF3E8] py-2 px-4 shadow-md text-xs sm:text-sm">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-3">
-            <span className="bg-[#D62300] text-white font-black px-2 py-0.5 rounded-full text-[11px] animate-pulse">
-              HOT
+    <div
+      style={{
+        backgroundColor: "#F5EBDC",
+        color: "#502314",
+        minHeight: "100vh",
+        paddingBottom: "110px",
+        fontFamily: "var(--font-cairo), 'Segoe UI', Tahoma, sans-serif",
+        direction: "rtl",
+      }}
+    >
+      {/* 1. TOP ANNOUNCEMENT BAR */}
+      <div
+        style={{
+          backgroundColor: "#502314",
+          color: "#FAF3E8",
+          padding: "8px 16px",
+          fontSize: "13px",
+          fontWeight: 700,
+          borderBottom: "2px solid #FFAE00",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "1280px",
+            margin: "0 auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "10px",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span
+              style={{
+                backgroundColor: "#D62300",
+                color: "#FFFFFF",
+                fontSize: "11px",
+                fontWeight: 900,
+                padding: "2px 8px",
+                borderRadius: "100px",
+              }}
+            >
+              HOT 🔥
             </span>
-            <span className="font-bold hidden sm:inline">
-              🍔 كابتن برجر - فروعنا في الشيخ زايد و 6 أكتوبر
-            </span>
-            <span className="font-bold sm:hidden">
-              كابتن برجر - زايد وأكتوبر
-            </span>
+            <span>كابتن برجر - فروعنا في الشيخ زايد (الحي العاشر) و 6 أكتوبر (غرب سوميد / وصلة دهشور)</span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
             <a
               href="tel:01206002168"
-              className="flex items-center gap-1.5 text-[#FFAE00] font-bold hover:underline"
+              style={{ color: "#FFAE00", textDecoration: "none", fontWeight: 800, display: "flex", alignItems: "center", gap: "6px" }}
             >
-              <Phone className="w-3.5 h-3.5" />
+              <Phone size={14} />
               <span dir="ltr">01206002168</span>
             </a>
-            <span className="text-[#FAF3E8]/30">|</span>
+            <span style={{ opacity: 0.3 }}>|</span>
             <Link
               href="/download"
-              className="bg-[#FFAE00] text-[#502314] font-black px-2.5 py-1 rounded-lg flex items-center gap-1 hover:bg-yellow-400 transition-all shadow-sm text-xs"
+              style={{
+                backgroundColor: "#FFAE00",
+                color: "#502314",
+                fontWeight: 900,
+                fontSize: "12px",
+                padding: "4px 10px",
+                borderRadius: "8px",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px",
+              }}
             >
               <span>حمّل الأبلكيشن</span>
-              <span className="text-[10px] bg-[#502314] text-white px-1 rounded">APK</span>
+              <span style={{ backgroundColor: "#502314", color: "#FFFFFF", fontSize: "10px", padding: "1px 4px", borderRadius: "4px" }}>APK</span>
             </Link>
           </div>
         </div>
@@ -498,170 +512,301 @@ export default function StorefrontPage() {
       {/* TAB 1: HOME (الرئيسية 🏠) */}
       {/* ============================================================ */}
       {activeTab === "home" && (
-        <main className="animate-fadeIn">
-          {/* Service Mode Selector (Delivery / Takeaway / Dine-in) */}
-          <div className="max-w-7xl mx-auto px-4 pt-4 sm:pt-6">
-            <div className="bg-white rounded-2xl p-2 sm:p-3 shadow-md border-2 border-[#502314]/10 flex items-center justify-between gap-1 sm:gap-2">
-              <button
-                onClick={() => {
-                  setOrderType("delivery");
-                  playSound("click");
-                }}
-                className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-3 rounded-xl font-black text-xs sm:text-sm transition-all ${
-                  orderType === "delivery"
-                    ? "bg-[#D62300] text-white shadow-md scale-[1.02]"
-                    : "text-[#502314] hover:bg-[#F5EBDC]"
-                }`}
-              >
-                <Bike className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>دليفري سريع</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  setOrderType("takeaway");
-                  playSound("click");
-                }}
-                className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-3 rounded-xl font-black text-xs sm:text-sm transition-all ${
-                  orderType === "takeaway"
-                    ? "bg-[#D62300] text-white shadow-md scale-[1.02]"
-                    : "text-[#502314] hover:bg-[#F5EBDC]"
-                }`}
-              >
-                <Store className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>استلام تيك أواي</span>
-              </button>
-
-              <button
-                onClick={() => {
-                  setOrderType("dine_in");
-                  playSound("click");
-                }}
-                className={`flex-1 flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-3 rounded-xl font-black text-xs sm:text-sm transition-all ${
-                  orderType === "dine_in"
-                    ? "bg-[#D62300] text-white shadow-md scale-[1.02]"
-                    : "text-[#502314] hover:bg-[#F5EBDC]"
-                }`}
-              >
-                <Utensils className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span>طلب داخل الصالة</span>
-              </button>
-            </div>
+        <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "16px" }}>
+          {/* Service Mode Selector */}
+          <div
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: "20px",
+              padding: "8px",
+              border: "2px solid rgba(80, 35, 20, 0.12)",
+              boxShadow: "0 6px 20px rgba(80, 35, 20, 0.05)",
+              display: "flex",
+              gap: "8px",
+              marginBottom: "20px",
+            }}
+          >
+            {[
+              { id: "delivery", label: "دليفري سريع", icon: <Bike size={18} /> },
+              { id: "takeaway", label: "استلام تيك أواي", icon: <Store size={18} /> },
+              { id: "dine_in", label: "طلب بالصالة", icon: <Utensils size={18} /> },
+            ].map((m) => {
+              const active = orderType === m.id;
+              return (
+                <button
+                  key={m.id}
+                  onClick={() => {
+                    setOrderType(m.id as any);
+                    playSound("click");
+                  }}
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "8px",
+                    padding: "12px 8px",
+                    borderRadius: "14px",
+                    fontSize: "14px",
+                    fontWeight: 900,
+                    cursor: "pointer",
+                    border: "none",
+                    backgroundColor: active ? "#D62300" : "transparent",
+                    color: active ? "#FFFFFF" : "#502314",
+                    boxShadow: active ? "0 4px 12px rgba(214, 35, 0, 0.3)" : "none",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  {m.icon}
+                  <span>{m.label}</span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Juicy Hero Carousel */}
-          <div className="max-w-7xl mx-auto px-4 py-4 sm:py-6">
+          <div
+            style={{
+              position: "relative",
+              borderRadius: "28px",
+              overflow: "hidden",
+              backgroundColor: "#502314",
+              border: "4px solid #FFAE00",
+              boxShadow: "0 16px 40px rgba(80, 35, 20, 0.2)",
+              marginBottom: "32px",
+              minHeight: "420px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            {/* Background Image with Gradient */}
             <div
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-              className="relative rounded-3xl overflow-hidden shadow-2xl bg-[#502314] border-4 border-[#FFAE00]/40 group"
+              style={{
+                position: "absolute",
+                inset: 0,
+                backgroundImage: `url(${HERO_SLIDES[heroIndex].image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                transition: "all 0.6s ease",
+              }}
             >
-              <div className="relative min-h-[380px] sm:min-h-[440px] flex items-center">
-                {/* Background Image with Gradient Overlay */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-all duration-700 transform scale-105"
-                  style={{ backgroundImage: `url(${HERO_SLIDES[heroIndex].image})` }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#502314] via-[#502314]/90 to-transparent" />
-                </div>
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  background: "linear-gradient(to left, rgba(80, 35, 20, 0.95) 0%, rgba(80, 35, 20, 0.85) 50%, rgba(80, 35, 20, 0.4) 100%)",
+                }}
+              />
+            </div>
 
-                {/* Slide Text Content */}
-                <div className="relative z-10 p-6 sm:p-12 max-w-xl text-white">
-                  <span className="inline-block bg-[#D62300] text-white text-xs sm:text-sm font-black px-3 py-1 rounded-full mb-3 shadow-lg">
-                    {HERO_SLIDES[heroIndex].badge}
-                  </span>
-                  <h1 className="text-2xl sm:text-4xl md:text-5xl font-black leading-tight mb-2 sm:mb-4 text-[#FFAE00]">
-                    {HERO_SLIDES[heroIndex].title}
-                  </h1>
-                  <p className="text-sm sm:text-base text-[#FAF3E8] mb-4 sm:mb-6 line-clamp-3 leading-relaxed">
-                    {HERO_SLIDES[heroIndex].subtitle}
-                  </p>
+            {/* Slide Text Content */}
+            <div
+              style={{
+                position: "relative",
+                zIndex: 10,
+                padding: "36px 32px",
+                maxWidth: "600px",
+                color: "#FFFFFF",
+              }}
+            >
+              <span
+                style={{
+                  display: "inline-block",
+                  backgroundColor: "#D62300",
+                  color: "#FFFFFF",
+                  fontSize: "13px",
+                  fontWeight: 900,
+                  padding: "4px 12px",
+                  borderRadius: "100px",
+                  marginBottom: "12px",
+                  boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+                }}
+              >
+                {HERO_SLIDES[heroIndex].badge}
+              </span>
 
-                  <div className="flex items-baseline gap-3 mb-6">
-                    <span className="text-3xl sm:text-4xl font-black text-[#FFAE00]">
-                      {HERO_SLIDES[heroIndex].price} <span className="text-lg">جنيه</span>
-                    </span>
-                    <span className="text-lg sm:text-xl text-white/50 line-through">
-                      {HERO_SLIDES[heroIndex].originalPrice} جنيه
-                    </span>
-                  </div>
+              <h1
+                style={{
+                  fontSize: "36px",
+                  fontWeight: 900,
+                  color: "#FFAE00",
+                  margin: "0 0 12px 0",
+                  lineHeight: 1.2,
+                }}
+              >
+                {HERO_SLIDES[heroIndex].title}
+              </h1>
 
-                  <div className="flex items-center gap-3">
-                    <button
-                      onClick={() => {
-                        setActiveTab("menu");
-                        playSound("click");
-                      }}
-                      className="bg-[#D62300] hover:bg-red-700 text-white font-black px-6 py-3 rounded-2xl shadow-xl flex items-center gap-2 transition-all transform hover:scale-105 text-sm sm:text-base"
-                    >
-                      <span>{HERO_SLIDES[heroIndex].cta}</span>
-                      <ArrowLeft className="w-5 h-5 rtl:rotate-0 ltr:rotate-180" />
-                    </button>
-                    <button
-                      onClick={() => {
-                        setActiveTab("offers");
-                        playSound("click");
-                      }}
-                      className="bg-white/10 hover:bg-white/20 text-[#FFAE00] border border-[#FFAE00]/40 font-bold px-4 py-3 rounded-2xl text-sm transition-all"
-                    >
-                      كافة العروض 🔥
-                    </button>
-                  </div>
-                </div>
+              <p
+                style={{
+                  fontSize: "15px",
+                  color: "#FAF3E8",
+                  lineHeight: 1.6,
+                  marginBottom: "20px",
+                  fontWeight: 600,
+                }}
+              >
+                {HERO_SLIDES[heroIndex].subtitle}
+              </p>
 
-                {/* Left / Right Nav Arrows */}
-                <button
-                  onClick={prevHero}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-all backdrop-blur-sm"
-                  aria-label="Previous slide"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-                <button
-                  onClick={nextHero}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-black/40 hover:bg-black/70 text-white flex items-center justify-center transition-all backdrop-blur-sm"
-                  aria-label="Next slide"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "12px", marginBottom: "24px" }}>
+                <span style={{ fontSize: "36px", fontWeight: 900, color: "#FFAE00" }}>
+                  {HERO_SLIDES[heroIndex].price} <span style={{ fontSize: "16px" }}>جنيه</span>
+                </span>
+                <span style={{ fontSize: "18px", color: "rgba(255,255,255,0.5)", textDecoration: "line-through" }}>
+                  {HERO_SLIDES[heroIndex].originalPrice} جنيه
+                </span>
               </div>
 
-              {/* Dot Indicators */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-                {HERO_SLIDES.map((_, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setHeroIndex(idx)}
-                    className={`h-2.5 rounded-full transition-all ${
-                      heroIndex === idx ? "w-8 bg-[#FFAE00]" : "w-2.5 bg-white/40"
-                    }`}
-                    aria-label={`Slide ${idx + 1}`}
-                  />
-                ))}
+              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                <button
+                  onClick={() => {
+                    setActiveTab("menu");
+                    playSound("click");
+                  }}
+                  style={{
+                    backgroundColor: "#D62300",
+                    color: "#FFFFFF",
+                    fontWeight: 900,
+                    fontSize: "15px",
+                    padding: "12px 26px",
+                    borderRadius: "16px",
+                    border: "none",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    boxShadow: "0 6px 18px rgba(214, 35, 0, 0.4)",
+                  }}
+                >
+                  <span>{HERO_SLIDES[heroIndex].cta}</span>
+                  <ArrowLeft size={18} />
+                </button>
+
+                <button
+                  onClick={() => {
+                    setActiveTab("offers");
+                    playSound("click");
+                  }}
+                  style={{
+                    backgroundColor: "rgba(255,255,255,0.12)",
+                    color: "#FFAE00",
+                    border: "1.5px solid #FFAE00",
+                    fontWeight: 800,
+                    fontSize: "14px",
+                    padding: "12px 20px",
+                    borderRadius: "16px",
+                    cursor: "pointer",
+                  }}
+                >
+                  كافة العروض 🔥
+                </button>
               </div>
+            </div>
+
+            {/* Carousel Arrows */}
+            <button
+              onClick={prevHero}
+              style={{
+                position: "absolute",
+                right: "16px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: "42px",
+                height: "42px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(0,0,0,0.5)",
+                color: "#FFFFFF",
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 20,
+              }}
+            >
+              <ChevronRight size={24} />
+            </button>
+
+            <button
+              onClick={nextHero}
+              style={{
+                position: "absolute",
+                left: "16px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                width: "42px",
+                height: "42px",
+                borderRadius: "50%",
+                backgroundColor: "rgba(0,0,0,0.5)",
+                color: "#FFFFFF",
+                border: "none",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: 20,
+              }}
+            >
+              <ChevronLeft size={24} />
+            </button>
+
+            {/* Dots */}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "16px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                display: "flex",
+                gap: "8px",
+                zIndex: 20,
+              }}
+            >
+              {HERO_SLIDES.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setHeroIndex(idx)}
+                  style={{
+                    width: heroIndex === idx ? "28px" : "10px",
+                    height: "10px",
+                    borderRadius: "100px",
+                    backgroundColor: heroIndex === idx ? "#FFAE00" : "rgba(255,255,255,0.4)",
+                    border: "none",
+                    cursor: "pointer",
+                    transition: "all 0.3s",
+                  }}
+                />
+              ))}
             </div>
           </div>
 
-          {/* Quick Categories Bar (Click switches to Menu tab) */}
-          <div className="max-w-7xl mx-auto px-4 py-2">
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg sm:text-xl font-black text-[#502314] flex items-center gap-2">
+          {/* Quick Categories Bar */}
+          <div style={{ marginBottom: "36px" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+              <h2 style={{ fontSize: "22px", fontWeight: 900, color: "#502314", margin: 0, display: "flex", alignItems: "center", gap: "8px" }}>
                 <span>تصفح الأقسام</span>
-                <span className="text-xs bg-[#FFAE00] text-[#502314] px-2 py-0.5 rounded-full font-bold">
+                <span style={{ fontSize: "12px", backgroundColor: "#FFAE00", color: "#502314", padding: "2px 8px", borderRadius: "100px", fontWeight: 800 }}>
                   طازج يومياً
                 </span>
               </h2>
+
               <button
                 onClick={() => setActiveTab("menu")}
-                className="text-xs sm:text-sm font-bold text-[#D62300] hover:underline flex items-center gap-1"
+                style={{ background: "none", border: "none", color: "#D62300", fontWeight: 900, fontSize: "14px", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px" }}
               >
                 <span>فتح المنيو بالكامل</span>
-                <ChevronLeft className="w-4 h-4 rtl:rotate-0 ltr:rotate-180" />
+                <ChevronLeft size={16} />
               </button>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                gap: "14px",
+              }}
+            >
               {[
                 { name: "برجر لحم بلدي", icon: "🥩", count: "10 أصناف", cat: "برجر لحم بلدي فاخر" },
                 { name: "دجاج كرسبي", icon: "🍗", count: "5 أصناف", cat: "برجر دجاج كرسبي" },
@@ -676,14 +821,27 @@ export default function StorefrontPage() {
                     setActiveTab("menu");
                     playSound("click");
                   }}
-                  className="bg-white hover:bg-[#FAF3E8] p-3 sm:p-4 rounded-2xl shadow-sm border border-[#502314]/10 text-right flex flex-col justify-between transition-all hover:scale-[1.02] hover:shadow-md group"
+                  style={{
+                    backgroundColor: "#FFFFFF",
+                    border: "2px solid rgba(80, 35, 20, 0.1)",
+                    borderRadius: "20px",
+                    padding: "16px",
+                    textAlign: "right",
+                    cursor: "pointer",
+                    boxShadow: "0 4px 14px rgba(80, 35, 20, 0.04)",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    minHeight: "100px",
+                    transition: "all 0.2s",
+                  }}
                 >
-                  <div className="text-3xl mb-2 group-hover:scale-110 transition-transform">{item.icon}</div>
+                  <div style={{ fontSize: "32px", marginBottom: "8px" }}>{item.icon}</div>
                   <div>
-                    <h3 className="font-black text-sm sm:text-base text-[#502314] group-hover:text-[#D62300] transition-colors">
+                    <h3 style={{ fontSize: "16px", fontWeight: 900, color: "#502314", margin: "0 0 2px 0" }}>
                       {item.name}
                     </h3>
-                    <span className="text-xs text-[#502314]/60 font-medium">{item.count}</span>
+                    <span style={{ fontSize: "12px", color: "#7E6554", fontWeight: 600 }}>{item.count}</span>
                   </div>
                 </button>
               ))}
@@ -691,62 +849,107 @@ export default function StorefrontPage() {
           </div>
 
           {/* Best Sellers Hits Section */}
-          <div className="max-w-7xl mx-auto px-4 py-6">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <span className="text-xs font-black uppercase text-[#D62300] tracking-wider">
-                  الأكثر مبيعاً هذا الأسبوع
-                </span>
-                <h2 className="text-xl sm:text-2xl font-black text-[#502314] flex items-center gap-2">
-                  <span>أطباق الكابتن المميزة 🔥</span>
-                </h2>
-              </div>
+          <div style={{ marginBottom: "36px" }}>
+            <div style={{ marginBottom: "16px" }}>
+              <span style={{ fontSize: "12px", fontWeight: 900, color: "#D62300", textTransform: "uppercase" }}>
+                الأكثر مبيعاً هذا الأسبوع
+              </span>
+              <h2 style={{ fontSize: "24px", fontWeight: 900, color: "#502314", margin: "4px 0 0 0" }}>
+                أطباق الكابتن المميزة 🔥
+              </h2>
             </div>
 
             {loading ? (
-              <div className="flex justify-center py-12">
-                <Loader2 className="w-8 h-8 text-[#D62300] animate-spin" />
+              <div style={{ textAlign: "center", padding: "60px" }}>
+                <Loader2 size={32} color="#D62300" className="animate-spin" />
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                  gap: "20px",
+                }}
+              >
                 {products.slice(0, 6).map((prod) => (
                   <div
                     key={prod.id}
-                    className="bg-white rounded-3xl overflow-hidden shadow-md border-2 border-[#502314]/10 hover:border-[#FFAE00] transition-all flex flex-col justify-between group"
+                    style={{
+                      backgroundColor: "#FFFFFF",
+                      borderRadius: "24px",
+                      overflow: "hidden",
+                      border: "2px solid rgba(80, 35, 20, 0.1)",
+                      boxShadow: "0 8px 24px rgba(80, 35, 20, 0.06)",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                    }}
                   >
-                    <div className="relative h-48 bg-[#F5EBDC] overflow-hidden">
+                    <div style={{ position: "relative", height: "200px", backgroundColor: "#F5EBDC" }}>
                       <img
                         src={prod.image || "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600"}
                         alt={prod.nameAr}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
                       />
                       {prod.promoActive && (
-                        <div className="absolute top-3 right-3 bg-[#D62300] text-white text-xs font-black px-2.5 py-1 rounded-full shadow-md animate-pulse">
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "12px",
+                            right: "12px",
+                            backgroundColor: "#D62300",
+                            color: "#FFFFFF",
+                            fontSize: "11px",
+                            fontWeight: 900,
+                            padding: "4px 10px",
+                            borderRadius: "100px",
+                          }}
+                        >
                           عرض خاص 🔥
                         </div>
                       )}
-                      <div className="absolute bottom-2 left-2 bg-[#502314]/80 backdrop-blur-sm text-[#FFAE00] text-xs font-bold px-2 py-1 rounded-lg">
+                      <div
+                        style={{
+                          position: "absolute",
+                          bottom: "10px",
+                          left: "10px",
+                          backgroundColor: "rgba(80, 35, 20, 0.85)",
+                          color: "#FFAE00",
+                          fontSize: "11px",
+                          fontWeight: 800,
+                          padding: "3px 8px",
+                          borderRadius: "8px",
+                        }}
+                      >
                         {prod.category}
                       </div>
                     </div>
 
-                    <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+                    <div style={{ padding: "18px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                       <div>
-                        <h3 className="text-lg font-black text-[#502314] mb-1 group-hover:text-[#D62300] transition-colors">
+                        <h3 style={{ fontSize: "18px", fontWeight: 900, color: "#502314", margin: "0 0 6px 0" }}>
                           {prod.nameAr}
                         </h3>
-                        <p className="text-xs text-[#502314]/70 line-clamp-2 leading-relaxed mb-3">
-                          {prod.description || "لحم بلدي فاخر محضر طازج يومياً مع إضافات الكابتن الخاصة"}
+                        <p style={{ fontSize: "13px", color: "#7E6554", lineHeight: 1.5, margin: "0 0 16px 0" }}>
+                          {prod.description}
                         </p>
                       </div>
 
-                      <div className="pt-3 border-t border-[#502314]/10 flex items-center justify-between">
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          paddingTop: "12px",
+                          borderTop: "1px solid rgba(80, 35, 20, 0.1)",
+                        }}
+                      >
                         <div>
-                          <span className="text-xl font-black text-[#D62300]">
-                            {getProductPrice(prod)} <span className="text-xs">ج.م</span>
+                          <span style={{ fontSize: "20px", fontWeight: 900, color: "#D62300" }}>
+                            {getProductPrice(prod)} <span style={{ fontSize: "12px" }}>ج.م</span>
                           </span>
                           {prod.originalPrice && prod.originalPrice > prod.basePrice && (
-                            <span className="text-xs text-[#502314]/40 line-through mr-2">
+                            <span style={{ fontSize: "13px", color: "#A89485", textDecoration: "line-through", marginRight: "8px" }}>
                               {prod.originalPrice} ج
                             </span>
                           )}
@@ -760,9 +963,22 @@ export default function StorefrontPage() {
                               addToCartDirect(prod);
                             }
                           }}
-                          className="bg-[#D62300] hover:bg-[#502314] text-white font-black px-4 py-2 rounded-xl text-xs sm:text-sm flex items-center gap-1.5 transition-all shadow-md active:scale-95"
+                          style={{
+                            backgroundColor: "#D62300",
+                            color: "#FFFFFF",
+                            border: "none",
+                            borderRadius: "12px",
+                            padding: "8px 16px",
+                            fontSize: "13px",
+                            fontWeight: 900,
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            boxShadow: "0 4px 10px rgba(214, 35, 0, 0.3)",
+                          }}
                         >
-                          <Plus className="w-4 h-4" />
+                          <Plus size={16} />
                           <span>أضف للطلب</span>
                         </button>
                       </div>
@@ -773,36 +989,72 @@ export default function StorefrontPage() {
             )}
           </div>
 
-          {/* Captain Rewards Promo Teaser Banner */}
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <div className="bg-gradient-to-r from-[#502314] to-[#7A361E] rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden shadow-xl border-2 border-[#FFAE00]">
-              <div className="absolute -left-10 -bottom-10 w-48 h-48 bg-[#FFAE00]/10 rounded-full blur-2xl" />
-              <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div className="text-center sm:text-right">
-                  <div className="inline-flex items-center gap-2 bg-[#FFAE00] text-[#502314] font-black text-xs px-3 py-1 rounded-full mb-3 shadow-md">
-                    <Award className="w-4 h-4" />
-                    <span>برنامج الولاء - كابتن كوينز 👑</span>
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl font-black mb-2 text-[#FAF3E8]">
-                    اجمع كوينز مع كل طلب واستبدلها بوجبات مجانية!
-                  </h3>
-                  <p className="text-xs sm:text-sm text-[#FAF3E8]/80 max-w-xl">
-                    كل 100 جنيه بتطلبها بتديك 10 كابتن كوينز في حسابك تقدر تستبدلهم ببطاطس لودد، سندوتشات برجر مجانية، أو خصومات فورية داخل فروعنا.
-                  </p>
-                </div>
-
-                <button
-                  onClick={() => {
-                    setActiveTab("rewards");
-                    playSound("click");
-                  }}
-                  className="bg-[#FFAE00] hover:bg-yellow-400 text-[#502314] font-black px-6 py-3.5 rounded-2xl shadow-lg transition-all transform hover:scale-105 text-sm sm:text-base flex items-center gap-2 whitespace-nowrap"
-                >
-                  <QrCode className="w-5 h-5" />
-                  <span>عرض كودي ومكافآتي</span>
-                </button>
+          {/* Captain Rewards Teaser Banner */}
+          <div
+            style={{
+              background: "linear-gradient(135deg, #502314 0%, #7A361E 100%)",
+              borderRadius: "28px",
+              padding: "32px",
+              color: "#FFFFFF",
+              border: "3px solid #FFAE00",
+              boxShadow: "0 12px 30px rgba(80, 35, 20, 0.15)",
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "20px",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  backgroundColor: "#FFAE00",
+                  color: "#502314",
+                  fontSize: "12px",
+                  fontWeight: 900,
+                  padding: "4px 12px",
+                  borderRadius: "100px",
+                  marginBottom: "12px",
+                }}
+              >
+                <Award size={14} />
+                <span>برنامج الولاء - كابتن كوينز 👑</span>
               </div>
+              <h3 style={{ fontSize: "24px", fontWeight: 900, margin: "0 0 8px 0", color: "#FAF3E8" }}>
+                اجمع كوينز مع كل أوردر واستبدلها بوجبات مجانية!
+              </h3>
+              <p style={{ fontSize: "14px", color: "rgba(255,255,255,0.8)", margin: 0, maxWidth: "600px", lineHeight: 1.5 }}>
+                كل 100 جنيه بتطلبها بتديك 10 كابتن كوينز في حسابك تقدر تستبدلهم ببطاطس لودد، برجر مجاني، أو خصومات فورية داخل فروعنا في زايد وأكتوبر.
+              </p>
             </div>
+
+            <button
+              onClick={() => {
+                setActiveTab("rewards");
+                playSound("click");
+              }}
+              style={{
+                backgroundColor: "#FFAE00",
+                color: "#502314",
+                border: "none",
+                borderRadius: "16px",
+                padding: "14px 24px",
+                fontSize: "14px",
+                fontWeight: 900,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                boxShadow: "0 6px 16px rgba(0,0,0,0.2)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <QrCode size={18} />
+              <span>عرض كودي ومكافآتي</span>
+            </button>
           </div>
         </main>
       )}
@@ -811,30 +1063,55 @@ export default function StorefrontPage() {
       {/* TAB 2: MENU (المنيو 🍔) */}
       {/* ============================================================ */}
       {activeTab === "menu" && (
-        <main className="max-w-7xl mx-auto px-4 py-6 animate-fadeIn">
-          {/* Menu Header & Search Bar */}
-          <div className="mb-6">
-            <h1 className="text-2xl sm:text-3xl font-black text-[#502314] mb-2 flex items-center gap-2">
-              <span>قائمة طعام كابتن برجر 🍔</span>
+        <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "20px 16px" }}>
+          {/* Header & Search */}
+          <div style={{ marginBottom: "24px" }}>
+            <h1 style={{ fontSize: "28px", fontWeight: 900, color: "#502314", margin: "0 0 6px 0" }}>
+              قائمة طعام كابتن برجر 🍔
             </h1>
-            <p className="text-xs sm:text-sm text-[#502314]/70 mb-4">
-              برجر لحم بلدي 100% طازج عالفحم، دجاج كرسبي سوبر مقرمش، صوصات غرقانة ولودد فرايز
+            <p style={{ fontSize: "14px", color: "#7E6554", margin: "0 0 18px 0" }}>
+              برجر لحم بلدي 100% طازج عالفحم، دجاج كرسبي سوبر مقرمش، لودد فرايز وصوصات خاصة
             </p>
 
-            {/* Search Input */}
-            <div className="relative">
-              <Search className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#502314]/50" />
+            <div style={{ position: "relative" }}>
+              <Search
+                size={18}
+                style={{ position: "absolute", right: "16px", top: "50%", transform: "translateY(-50%)", color: "#7E6554" }}
+              />
               <input
                 type="text"
-                placeholder="ابحث عن الساندوتش المفضل لديك (مثال: جوسي لوسي، دبل سماش، كرسبي، لودد فرايز)..."
+                placeholder="ابحث عن وجبتك المفضلة (جوسي لوسي، دبل سماش، كرسبي تشيكن، لودد فرايز)..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pr-12 pl-4 py-3.5 bg-white border-2 border-[#502314]/15 rounded-2xl text-sm font-bold text-[#502314] focus:outline-none focus:border-[#D62300] shadow-sm transition-all placeholder:text-[#502314]/40"
+                style={{
+                  width: "100%",
+                  padding: "14px 48px 14px 16px",
+                  backgroundColor: "#FFFFFF",
+                  border: "2px solid rgba(80, 35, 20, 0.15)",
+                  borderRadius: "18px",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  color: "#502314",
+                  outline: "none",
+                  boxSizing: "border-box",
+                }}
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-xs bg-[#502314]/10 hover:bg-[#502314]/20 text-[#502314] px-2 py-1 rounded-md"
+                  style={{
+                    position: "absolute",
+                    left: "14px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    backgroundColor: "rgba(80,35,20,0.1)",
+                    border: "none",
+                    borderRadius: "6px",
+                    padding: "4px 8px",
+                    fontSize: "12px",
+                    color: "#502314",
+                    cursor: "pointer",
+                  }}
                 >
                   مسح
                 </button>
@@ -843,80 +1120,138 @@ export default function StorefrontPage() {
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 no-scrollbar">
-            {CATEGORY_NAMES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => {
-                  setActiveCategory(cat);
-                  playSound("click");
-                }}
-                className={`px-4 py-2.5 rounded-2xl font-black text-xs sm:text-sm whitespace-nowrap transition-all shadow-sm ${
-                  activeCategory === cat
-                    ? "bg-[#D62300] text-white scale-105 shadow-md"
-                    : "bg-white text-[#502314] hover:bg-[#FAF3E8] border border-[#502314]/10"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+          <div
+            style={{
+              display: "flex",
+              gap: "8px",
+              overflowX: "auto",
+              paddingBottom: "12px",
+              marginBottom: "24px",
+            }}
+          >
+            {CATEGORY_NAMES.map((cat) => {
+              const active = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => {
+                    setActiveCategory(cat);
+                    playSound("click");
+                  }}
+                  style={{
+                    padding: "10px 20px",
+                    borderRadius: "16px",
+                    fontSize: "13px",
+                    fontWeight: 900,
+                    cursor: "pointer",
+                    whiteSpace: "nowrap",
+                    border: active ? "2px solid #D62300" : "1.5px solid rgba(80, 35, 20, 0.15)",
+                    backgroundColor: active ? "#D62300" : "#FFFFFF",
+                    color: active ? "#FFFFFF" : "#502314",
+                    boxShadow: active ? "0 4px 12px rgba(214, 35, 0, 0.25)" : "none",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  {cat}
+                </button>
+              );
+            })}
           </div>
 
           {/* Product Grid */}
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-20 gap-3">
-              <Loader2 className="w-10 h-10 text-[#D62300] animate-spin" />
-              <span className="text-sm font-bold text-[#502314]/70">جاري تجهيز منيو الكابتن...</span>
+            <div style={{ textAlign: "center", padding: "80px" }}>
+              <Loader2 size={36} color="#D62300" className="animate-spin" />
+              <p style={{ marginTop: "12px", fontWeight: 700, color: "#7E6554" }}>جاري تحميل منيو الكابتن...</p>
             </div>
           ) : filteredProducts.length === 0 ? (
-            <div className="bg-white rounded-3xl p-12 text-center border-2 border-dashed border-[#502314]/20 my-8">
-              <ChefHat className="w-12 h-12 text-[#502314]/30 mx-auto mb-3" />
-              <h3 className="text-lg font-black text-[#502314] mb-1">لم يتم العثور على نتائج</h3>
-              <p className="text-xs text-[#502314]/60">جرب البحث بكلمة أخرى أو اختر قسماً آخر من القائمة.</p>
+            <div
+              style={{
+                backgroundColor: "#FFFFFF",
+                borderRadius: "24px",
+                padding: "60px 20px",
+                textAlign: "center",
+                border: "2px dashed rgba(80,35,20,0.2)",
+              }}
+            >
+              <h3 style={{ fontSize: "18px", fontWeight: 900, color: "#502314" }}>لم يتم العثور على نتائج</h3>
+              <p style={{ fontSize: "13px", color: "#7E6554", marginTop: "6px" }}>جرب البحث بكلمة أخرى أو تصفح قسماً آخر.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: "20px",
+              }}
+            >
               {filteredProducts.map((prod) => (
                 <div
                   key={prod.id}
-                  className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl border-2 border-[#502314]/10 hover:border-[#FFAE00] transition-all flex flex-col justify-between group"
+                  style={{
+                    backgroundColor: "#FFFFFF",
+                    borderRadius: "24px",
+                    overflow: "hidden",
+                    border: "2px solid rgba(80, 35, 20, 0.1)",
+                    boxShadow: "0 6px 20px rgba(80, 35, 20, 0.05)",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                  }}
                 >
-                  {/* Image container */}
-                  <div className="relative h-44 bg-[#F5EBDC] overflow-hidden">
+                  <div style={{ position: "relative", height: "190px", backgroundColor: "#F5EBDC" }}>
                     <img
                       src={prod.image || "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600"}
                       alt={prod.nameAr}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     />
                     {prod.promoActive && (
-                      <div className="absolute top-2 right-2 bg-[#D62300] text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-md">
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "10px",
+                          right: "10px",
+                          backgroundColor: "#D62300",
+                          color: "#FFFFFF",
+                          fontSize: "11px",
+                          fontWeight: 900,
+                          padding: "3px 8px",
+                          borderRadius: "100px",
+                        }}
+                      >
                         عرض توفير 🔥
                       </div>
                     )}
                   </div>
 
-                  {/* Body */}
-                  <div className="p-4 flex-1 flex flex-col justify-between">
+                  <div style={{ padding: "16px", flex: 1, display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                     <div>
-                      <h3 className="text-base font-black text-[#502314] mb-1 group-hover:text-[#D62300] transition-colors">
+                      <h3 style={{ fontSize: "17px", fontWeight: 900, color: "#502314", margin: "0 0 2px 0" }}>
                         {prod.nameAr}
                       </h3>
-                      <h4 className="text-[11px] font-bold text-[#502314]/40 mb-2">
+                      <h4 style={{ fontSize: "11px", fontWeight: 700, color: "rgba(80,35,20,0.5)", margin: "0 0 8px 0" }}>
                         {prod.nameEn}
                       </h4>
-                      <p className="text-xs text-[#502314]/70 line-clamp-2 leading-relaxed mb-4">
+                      <p style={{ fontSize: "12px", color: "#7E6554", lineHeight: 1.5, margin: "0 0 14px 0" }}>
                         {prod.description}
                       </p>
                     </div>
 
-                    {/* Price & Action */}
-                    <div className="pt-3 border-t border-[#502314]/10 flex items-center justify-between">
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        paddingTop: "12px",
+                        borderTop: "1px solid rgba(80, 35, 20, 0.1)",
+                      }}
+                    >
                       <div>
-                        <span className="text-lg font-black text-[#D62300]">
-                          {getProductPrice(prod)} <span className="text-xs font-bold">ج.م</span>
+                        <span style={{ fontSize: "19px", fontWeight: 900, color: "#D62300" }}>
+                          {getProductPrice(prod)} <span style={{ fontSize: "12px" }}>ج.م</span>
                         </span>
                         {prod.originalPrice && prod.originalPrice > prod.basePrice && (
-                          <span className="text-xs text-[#502314]/40 line-through mr-1.5">
+                          <span style={{ fontSize: "12px", color: "#A89485", textDecoration: "line-through", marginRight: "6px" }}>
                             {prod.originalPrice} ج
                           </span>
                         )}
@@ -930,9 +1265,22 @@ export default function StorefrontPage() {
                             addToCartDirect(prod);
                           }
                         }}
-                        className="bg-[#D62300] hover:bg-[#502314] text-white font-black px-3.5 py-2 rounded-xl text-xs flex items-center gap-1 transition-all shadow-md active:scale-95"
+                        style={{
+                          backgroundColor: "#D62300",
+                          color: "#FFFFFF",
+                          border: "none",
+                          borderRadius: "12px",
+                          padding: "8px 14px",
+                          fontSize: "12px",
+                          fontWeight: 900,
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "4px",
+                          boxShadow: "0 4px 10px rgba(214, 35, 0, 0.25)",
+                        }}
                       >
-                        <Plus className="w-3.5 h-3.5" />
+                        <Plus size={15} />
                         <span>{prod.sizes ? "تخصيص" : "أضف"}</span>
                       </button>
                     </div>
@@ -948,142 +1296,187 @@ export default function StorefrontPage() {
       {/* TAB 3: OFFERS & COUPONS (العروض 🔥) */}
       {/* ============================================================ */}
       {activeTab === "offers" && (
-        <main className="max-w-7xl mx-auto px-4 py-6 animate-fadeIn">
-          {/* Flash Deal Countdown Bar */}
-          <div className="bg-[#D62300] text-white rounded-3xl p-5 mb-8 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-3 text-center md:text-right">
-              <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-2xl">
+        <main style={{ maxWidth: "1280px", margin: "0 auto", padding: "20px 16px" }}>
+          {/* Flash Deal Bar */}
+          <div
+            style={{
+              backgroundColor: "#D62300",
+              color: "#FFFFFF",
+              borderRadius: "24px",
+              padding: "20px 24px",
+              boxShadow: "0 10px 30px rgba(214, 35, 0, 0.3)",
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "16px",
+              marginBottom: "32px",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  backgroundColor: "rgba(255,255,255,0.15)",
+                  borderRadius: "14px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "24px",
+                }}
+              >
                 ⚡
               </div>
               <div>
-                <h2 className="text-xl font-black">عروض الفلاش الحصرية - وقت محدود!</h2>
-                <p className="text-xs text-[#FAF3E8]/80">تنتهي العروض الحالية فور انتهاء العداد التنازلي:</p>
+                <h2 style={{ fontSize: "20px", fontWeight: 900, margin: "0 0 4px 0" }}>عروض الفلاش الحصرية - وقت محدود!</h2>
+                <p style={{ fontSize: "13px", opacity: 0.9, margin: 0 }}>تنتهي العروض فور انتهاء العداد التنازلي:</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 bg-[#502314] px-5 py-2.5 rounded-2xl shadow-inner font-mono text-xl sm:text-2xl font-black text-[#FFAE00]">
-              <Clock className="w-5 h-5 text-white mr-1" />
+            <div
+              style={{
+                backgroundColor: "#502314",
+                padding: "10px 20px",
+                borderRadius: "16px",
+                fontFamily: "monospace",
+                fontSize: "24px",
+                fontWeight: 900,
+                color: "#FFAE00",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              <Clock size={20} color="#FFFFFF" />
               <span>{formatFlashTime(flashSeconds)}</span>
             </div>
           </div>
 
-          <h2 className="text-2xl font-black text-[#502314] mb-4 flex items-center gap-2">
-            <span>كوبونات وخصومات الكابتن 🎫</span>
+          <h2 style={{ fontSize: "22px", fontWeight: 900, color: "#502314", marginBottom: "16px" }}>
+            كوبونات وخصومات الكابتن 🎫
           </h2>
 
-          {/* Interactive Coupon Tickets */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-12">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+              gap: "18px",
+              marginBottom: "36px",
+            }}
+          >
             {[
               {
                 code: "CAPTAIN20",
                 title: "خصم 20% على طلبك 🍔",
                 desc: "خصم فوري 20% على إجمالي الفاتورة للطلبات فوق 250 جنيه.",
                 badge: "كوبون المشتركين",
-                color: "#D62300",
               },
               {
                 code: "FREEFRIES",
                 title: "بطاطس شيدر هدية 🍟",
                 desc: "باكيت لودد فرايز غرقان صوص شيدر مجاناً عند طلب أي 2 برجر دبل.",
                 badge: "الأكثر استخداماً",
-                color: "#FFAE00",
               },
               {
                 code: "DUODEAL",
                 title: "كومبو الصحاب التوفيري 👥",
                 desc: "2 ساندوتش برجر كلاسيك سنجل + بطاطس + 2 كانز بيبسي بـ 199 ج فقط بدلاً من 270 ج.",
                 badge: "عرض التوفير",
-                color: "#502314",
               },
               {
                 code: "MONSTERBOX",
                 title: "بوكس العيلة العملاق 👑",
                 desc: "وفر 120 جنيه كاملة على كابتن بوكس العائلي مع 4 برجر وفرايز وبيبسي.",
                 badge: "عرض الجمعة واللمة",
-                color: "#D62300",
               },
             ].map((coupon, idx) => (
               <div
                 key={idx}
-                className="bg-white rounded-3xl p-6 shadow-md border-2 border-dashed border-[#502314]/20 flex flex-col justify-between relative overflow-hidden group hover:border-[#D62300] transition-all"
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  borderRadius: "24px",
+                  padding: "20px",
+                  border: "2px dashed rgba(80, 35, 20, 0.2)",
+                  boxShadow: "0 6px 18px rgba(80, 35, 20, 0.05)",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
               >
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div>
-                    <span className="text-[10px] font-black uppercase tracking-wider bg-[#F5EBDC] text-[#502314] px-2.5 py-1 rounded-full">
-                      {coupon.badge}
-                    </span>
-                    <h3 className="text-lg font-black text-[#502314] mt-2">{coupon.title}</h3>
-                    <p className="text-xs text-[#502314]/70 leading-relaxed mt-1">{coupon.desc}</p>
-                  </div>
-                  <div className="w-12 h-12 rounded-2xl bg-[#F5EBDC] flex items-center justify-center text-xl shrink-0">
-                    🎟️
-                  </div>
+                <div>
+                  <span
+                    style={{
+                      fontSize: "11px",
+                      fontWeight: 900,
+                      backgroundColor: "#F5EBDC",
+                      color: "#502314",
+                      padding: "3px 8px",
+                      borderRadius: "100px",
+                      display: "inline-block",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    {coupon.badge}
+                  </span>
+                  <h3 style={{ fontSize: "17px", fontWeight: 900, color: "#502314", margin: "0 0 4px 0" }}>
+                    {coupon.title}
+                  </h3>
+                  <p style={{ fontSize: "13px", color: "#7E6554", lineHeight: 1.5, margin: "0 0 16px 0" }}>
+                    {coupon.desc}
+                  </p>
                 </div>
 
-                <div className="pt-4 border-t border-[#502314]/10 flex items-center justify-between gap-3">
-                  <div className="bg-[#F5EBDC] px-3.5 py-1.5 rounded-xl border border-[#502314]/20 font-mono font-black text-sm text-[#502314]">
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    paddingTop: "14px",
+                    borderTop: "1px solid rgba(80, 35, 20, 0.1)",
+                  }}
+                >
+                  <span
+                    style={{
+                      backgroundColor: "#F5EBDC",
+                      padding: "6px 12px",
+                      borderRadius: "10px",
+                      border: "1px solid rgba(80,35,20,0.15)",
+                      fontFamily: "monospace",
+                      fontWeight: 900,
+                      fontSize: "14px",
+                      color: "#502314",
+                    }}
+                  >
                     {coupon.code}
-                  </div>
+                  </span>
 
                   <button
                     onClick={() => {
                       applyCoupon(coupon.code);
                       setCartOpen(true);
                     }}
-                    className="bg-[#D62300] hover:bg-[#502314] text-white font-black px-4 py-2 rounded-xl text-xs transition-all shadow-md flex items-center gap-1.5"
+                    style={{
+                      backgroundColor: "#D62300",
+                      color: "#FFFFFF",
+                      border: "none",
+                      borderRadius: "12px",
+                      padding: "8px 16px",
+                      fontSize: "12px",
+                      fontWeight: 900,
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      boxShadow: "0 4px 10px rgba(214, 35, 0, 0.25)",
+                    }}
                   >
-                    <Check className="w-4 h-4" />
+                    <Check size={14} />
                     <span>تطبيق في السلة</span>
                   </button>
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Flash Promo Menu Items */}
-          <h2 className="text-xl font-black text-[#502314] mb-4 flex items-center gap-2">
-            <span>عروض التوفير الأسبوعية المتاحة الآن 🔥</span>
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products
-              .filter((p) => p.category.includes("عروض") || p.category.includes("كومبو") || p.promoActive)
-              .map((prod) => (
-                <div
-                  key={prod.id}
-                  className="bg-white rounded-3xl overflow-hidden shadow-md border-2 border-[#D62300]/20 hover:border-[#D62300] transition-all flex flex-col justify-between"
-                >
-                  <div className="relative h-44 bg-[#F5EBDC]">
-                    <img
-                      src={prod.image || "https://images.unsplash.com/photo-1610614819513-58e34989848b?w=600"}
-                      alt={prod.nameAr}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute top-2 right-2 bg-[#D62300] text-white text-xs font-black px-2.5 py-0.5 rounded-full shadow-md">
-                      خصم حصري 🔥
-                    </div>
-                  </div>
-
-                  <div className="p-4 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h3 className="font-black text-base text-[#502314] mb-1">{prod.nameAr}</h3>
-                      <p className="text-xs text-[#502314]/70 line-clamp-2 mb-3">{prod.description}</p>
-                    </div>
-
-                    <div className="pt-3 border-t border-[#502314]/10 flex items-center justify-between">
-                      <span className="text-xl font-black text-[#D62300]">
-                        {getProductPrice(prod)} ج.م
-                      </span>
-                      <button
-                        onClick={() => addToCartDirect(prod)}
-                        className="bg-[#D62300] hover:bg-[#502314] text-white font-black px-4 py-2 rounded-xl text-xs transition-all shadow-md flex items-center gap-1"
-                      >
-                        <Plus className="w-4 h-4" />
-                        <span>اطلب العرض</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
           </div>
         </main>
       )}
@@ -1092,299 +1485,392 @@ export default function StorefrontPage() {
       {/* TAB 4: REWARDS & MY IN-STORE CODE (المكافآت 👑) */}
       {/* ============================================================ */}
       {activeTab === "rewards" && (
-        <main className="max-w-4xl mx-auto px-4 py-6 animate-fadeIn">
-          {/* Member Profile Header */}
-          <div className="bg-[#502314] text-white rounded-3xl p-6 sm:p-8 shadow-2xl border-4 border-[#FFAE00] mb-8 relative overflow-hidden">
-            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-6">
-              <div className="text-center sm:text-right">
-                <span className="bg-[#FFAE00] text-[#502314] text-xs font-black px-3 py-1 rounded-full inline-block mb-2 shadow-sm">
+        <main style={{ maxWidth: "800px", margin: "0 auto", padding: "20px 16px" }}>
+          {/* Member Card */}
+          <div
+            style={{
+              backgroundColor: "#502314",
+              borderRadius: "28px",
+              padding: "28px",
+              color: "#FFFFFF",
+              border: "4px solid #FFAE00",
+              boxShadow: "0 16px 40px rgba(80, 35, 20, 0.2)",
+              marginBottom: "28px",
+            }}
+          >
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "16px" }}>
+              <div>
+                <span
+                  style={{
+                    backgroundColor: "#FFAE00",
+                    color: "#502314",
+                    fontSize: "11px",
+                    fontWeight: 900,
+                    padding: "3px 10px",
+                    borderRadius: "100px",
+                    display: "inline-block",
+                    marginBottom: "8px",
+                  }}
+                >
                   عضو كابتن مميز 👑
                 </span>
-                <h1 className="text-2xl sm:text-3xl font-black text-[#FAF3E8]">
+                <h1 style={{ fontSize: "26px", fontWeight: 900, margin: "0 0 4px 0", color: "#FAF3E8" }}>
                   كابتن كوينز (Captain Coins)
                 </h1>
-                <p className="text-xs sm:text-sm text-[#FAF3E8]/70 mt-1">
-                  رقم العضوية: <span className="font-mono text-[#FFAE00]">CPT-2026-984</span>
+                <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)", margin: 0 }}>
+                  رقم العضوية: <span style={{ fontFamily: "monospace", color: "#FFAE00" }}>CPT-2026-984</span>
                 </p>
               </div>
 
-              {/* Coins Counter */}
-              <div className="bg-[#FAF3E8] text-[#502314] px-6 py-4 rounded-2xl text-center shadow-lg border-2 border-[#FFAE00] min-w-[160px]">
-                <span className="text-xs font-black block text-[#502314]/70">رصيدك الحالي</span>
-                <span className="text-4xl font-black text-[#D62300]">150</span>
-                <span className="text-xs font-bold block text-[#FFAE00]">كوين 🪙</span>
+              <div
+                style={{
+                  backgroundColor: "#FAF3E8",
+                  color: "#502314",
+                  padding: "16px 24px",
+                  borderRadius: "18px",
+                  textAlign: "center",
+                  border: "2px solid #FFAE00",
+                }}
+              >
+                <span style={{ fontSize: "11px", fontWeight: 900, opacity: 0.7, display: "block" }}>رصيدك الحالي</span>
+                <span style={{ fontSize: "36px", fontWeight: 900, color: "#D62300" }}>150</span>
+                <span style={{ fontSize: "11px", fontWeight: 900, color: "#FFAE00", display: "block" }}>كوين 🪙</span>
               </div>
             </div>
 
-            {/* Tier Progress */}
-            <div className="mt-6 pt-6 border-t border-white/10">
-              <div className="flex justify-between text-xs font-bold text-[#FAF3E8]/80 mb-2">
+            <div style={{ marginTop: "20px", paddingTop: "16px", borderTop: "1px solid rgba(255,255,255,0.12)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", fontWeight: 700, marginBottom: "8px" }}>
                 <span>المستوى الحالي: فضي 🥈</span>
                 <span>باقي 50 كوين للوصول إلى الذهبي 🥇</span>
               </div>
-              <div className="w-full bg-white/20 h-3 rounded-full overflow-hidden">
-                <div className="bg-[#FFAE00] h-full rounded-full transition-all duration-1000" style={{ width: "75%" }} />
+              <div style={{ width: "100%", height: "10px", backgroundColor: "rgba(255,255,255,0.2)", borderRadius: "100px", overflow: "hidden" }}>
+                <div style={{ width: "75%", height: "100%", backgroundColor: "#FFAE00", borderRadius: "100px" }} />
               </div>
             </div>
           </div>
 
-          {/* Simulated In-Store QR Code (My Code) */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-md border-2 border-[#502314]/15 mb-8 text-center">
-            <div className="max-w-xs mx-auto">
-              <div className="inline-flex items-center gap-1.5 text-xs font-black text-[#D62300] bg-red-50 px-3 py-1 rounded-full mb-3">
-                <QrCode className="w-4 h-4" />
+          {/* In-Store Code Box */}
+          <div
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: "24px",
+              padding: "28px",
+              border: "2px solid rgba(80, 35, 20, 0.12)",
+              textAlign: "center",
+              boxShadow: "0 8px 24px rgba(80, 35, 20, 0.05)",
+              marginBottom: "28px",
+            }}
+          >
+            <div style={{ maxWidth: "300px", margin: "0 auto" }}>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  backgroundColor: "#FEF2F2",
+                  color: "#D62300",
+                  fontSize: "12px",
+                  fontWeight: 900,
+                  padding: "4px 12px",
+                  borderRadius: "100px",
+                  marginBottom: "12px",
+                }}
+              >
+                <QrCode size={14} />
                 <span>امسح عند الكاشير بالفرع</span>
               </div>
-              <h3 className="text-lg font-black text-[#502314] mb-2">كودي في المطعم (In-Store Code)</h3>
-              <p className="text-xs text-[#502314]/70 mb-4 leading-relaxed">
-                اظهر هذا الكود للكاشير عند الطلب في فروع الشيخ زايد أو 6 أكتوبر لاكتساب النقاط الفورية أو استخدام الخصم.
+              <h3 style={{ fontSize: "18px", fontWeight: 900, color: "#502314", margin: "0 0 6px 0" }}>
+                كودي داخل المطعم
+              </h3>
+              <p style={{ fontSize: "12px", color: "#7E6554", lineHeight: 1.5, marginBottom: "16px" }}>
+                اظهر هذا الكود للكاشير في فروع زايد أو أكتوبر لاكتساب النقاط الفورية أو استخدام الخصم.
               </p>
 
-              {/* QR Image Box */}
-              <div className="bg-[#F5EBDC] p-4 rounded-2xl border-2 border-[#502314]/20 inline-block mb-3 shadow-inner">
+              <div
+                style={{
+                  backgroundColor: "#F5EBDC",
+                  padding: "16px",
+                  borderRadius: "20px",
+                  display: "inline-block",
+                  marginBottom: "12px",
+                  border: "2px solid rgba(80,35,20,0.15)",
+                }}
+              >
                 <img
                   src="/captain-apk-qr.png"
-                  alt="My In-Store Member Code"
-                  className="w-44 h-44 object-contain rounded-xl mx-auto"
+                  alt="In-store QR Code"
+                  style={{ width: "160px", height: "160px", objectFit: "contain", display: "block" }}
                 />
               </div>
 
-              <div className="font-mono text-base font-black tracking-widest text-[#502314] bg-[#F5EBDC] py-1.5 px-4 rounded-xl border border-[#502314]/20 inline-block">
+              <div
+                style={{
+                  fontFamily: "monospace",
+                  fontSize: "16px",
+                  fontWeight: 900,
+                  color: "#502314",
+                  backgroundColor: "#F5EBDC",
+                  padding: "6px 14px",
+                  borderRadius: "10px",
+                  letterSpacing: "1px",
+                }}
+              >
                 CPT-7729-BRGR
               </div>
-            </div>
-          </div>
-
-          {/* Redeemable Rewards Catalog */}
-          <div>
-            <h2 className="text-xl font-black text-[#502314] mb-4 flex items-center gap-2">
-              <span>استبدال النقاط بمكافآت مجانية 🎁</span>
-            </h2>
-
-            <div className="space-y-3">
-              {[
-                { coins: 50, item: "كوب صوص شيدر سايح أو رانش مجاناً", unlocked: true },
-                { coins: 100, item: "باكيت بطاطس كابتن كرسبي مقلية عائلية", unlocked: true },
-                { coins: 200, item: "ساندوتش كابتن كلاسيك بيف سنجل مجاناً", unlocked: false },
-                { coins: 350, item: "وجبة جوسي لوسي دبل بركان جبنة كومبو كاملة", unlocked: false },
-                { coins: 500, item: "كابتن بوكس العائلي مجاناً بالكامل 👑", unlocked: false },
-              ].map((reward, idx) => (
-                <div
-                  key={idx}
-                  className={`p-4 rounded-2xl flex items-center justify-between border-2 transition-all ${
-                    reward.unlocked
-                      ? "bg-white border-[#502314]/15 shadow-sm"
-                      : "bg-[#F5EBDC]/50 border-dashed border-[#502314]/20 opacity-70"
-                  }`}
-                >
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`w-10 h-10 rounded-xl flex items-center justify-center font-black text-xs ${
-                        reward.unlocked
-                          ? "bg-[#FFAE00] text-[#502314]"
-                          : "bg-gray-200 text-gray-500"
-                      }`}
-                    >
-                      {reward.coins}
-                    </div>
-                    <div>
-                      <h4 className="font-black text-sm text-[#502314]">{reward.item}</h4>
-                      <span className="text-[11px] text-[#502314]/60">
-                        {reward.unlocked ? "متاح للاستبدال الفوري" : `متبقي ${reward.coins - 150} كوين`}
-                      </span>
-                    </div>
-                  </div>
-
-                  {reward.unlocked ? (
-                    <button
-                      onClick={() => {
-                        alert(`تم تفعيل مكافأة: ${reward.item}! يرجى إضافتها في ملاحظات الطلب.`);
-                        playSound("cash");
-                      }}
-                      className="bg-[#D62300] hover:bg-red-700 text-white font-black text-xs px-3.5 py-2 rounded-xl transition-all shadow-md"
-                    >
-                      استبدل الآن
-                    </button>
-                  ) : (
-                    <span className="text-xs font-bold text-gray-400 bg-gray-100 px-3 py-1.5 rounded-xl">
-                      مغلق 🔒
-                    </span>
-                  )}
-                </div>
-              ))}
             </div>
           </div>
         </main>
       )}
 
-      {/* 3. FLOATING CART PILL (Pinned directly above the 4-Bottom-Tab Nav) */}
+      {/* 3. FLOATING CART PILL */}
       {cart.length > 0 && (
-        <div className="fixed bottom-[74px] left-0 right-0 z-40 px-4 max-w-lg mx-auto animate-bounce-short">
+        <div
+          style={{
+            position: "fixed",
+            bottom: "74px",
+            left: 0,
+            right: 0,
+            zIndex: 900,
+            padding: "0 16px",
+            maxWidth: "500px",
+            margin: "0 auto",
+          }}
+        >
           <button
             onClick={() => {
               setCartOpen(true);
               playSound("click");
             }}
-            className="w-full bg-[#D62300] hover:bg-[#502314] text-white p-3.5 rounded-2xl shadow-2xl flex items-center justify-between border-2 border-[#FFAE00] transition-all transform hover:scale-[1.02]"
+            style={{
+              width: "100%",
+              backgroundColor: "#D62300",
+              color: "#FFFFFF",
+              padding: "14px 20px",
+              borderRadius: "20px",
+              border: "3px solid #FFAE00",
+              boxShadow: "0 10px 30px rgba(214, 35, 0, 0.4)",
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              transition: "transform 0.2s",
+            }}
           >
-            <div className="flex items-center gap-3">
-              <div className="relative bg-[#502314] p-2 rounded-xl text-[#FFAE00]">
-                <ShoppingCart className="w-5 h-5" />
-                <span className="absolute -top-2 -right-2 bg-[#FFAE00] text-[#502314] font-black text-xs w-5 h-5 rounded-full flex items-center justify-center">
+            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <div
+                style={{
+                  position: "relative",
+                  backgroundColor: "#502314",
+                  padding: "8px",
+                  borderRadius: "12px",
+                  color: "#FFAE00",
+                }}
+              >
+                <ShoppingCart size={20} />
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "-6px",
+                    right: "-6px",
+                    backgroundColor: "#FFAE00",
+                    color: "#502314",
+                    fontSize: "11px",
+                    fontWeight: 900,
+                    width: "18px",
+                    height: "18px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   {cartTotalQty}
                 </span>
               </div>
-              <div className="text-right">
-                <span className="text-xs font-bold text-yellow-200 block">سلة طلبات الكابتن</span>
-                <span className="text-sm font-black text-white">عرض السلة وإتمام الطلب</span>
+
+              <div style={{ textAlign: "right" }}>
+                <span style={{ fontSize: "11px", fontWeight: 700, color: "#FED7AA", display: "block" }}>سلة كابتن برجر</span>
+                <span style={{ fontSize: "14px", fontWeight: 900 }}>عرض السلة وإتمام الطلب</span>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <span className="text-lg font-black text-[#FFAE00]">
-                {cartTotal} <span className="text-xs font-bold text-white">ج.م</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ fontSize: "18px", fontWeight: 900, color: "#FFAE00" }}>
+                {cartTotal} <span style={{ fontSize: "12px", color: "#FFFFFF" }}>ج.م</span>
               </span>
-              <ChevronLeft className="w-5 h-5 rtl:rotate-0 ltr:rotate-180 text-white" />
+              <ChevronLeft size={18} />
             </div>
           </button>
         </div>
       )}
 
-      {/* 4. BURGER KING 4-BOTTOM-TAB FIXED NAVIGATION BAR */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#F5EBDC] border-t-2 border-[#502314]/15 shadow-2xl py-2 px-3">
-        <div className="max-w-md mx-auto grid grid-cols-4 gap-1">
-          {/* Tab 1: Home */}
-          <button
-            onClick={() => {
-              setActiveTab("home");
-              playSound("click");
-            }}
-            className={`flex flex-col items-center justify-center py-1.5 rounded-xl transition-all ${
-              activeTab === "home"
-                ? "text-[#D62300] font-black scale-105"
-                : "text-[#502314]/70 hover:text-[#502314] font-bold"
-            }`}
-          >
-            <span className="text-xl mb-0.5">🏠</span>
-            <span className="text-[11px]">الرئيسية</span>
-            {activeTab === "home" && <div className="w-1.5 h-1.5 bg-[#D62300] rounded-full mt-0.5" />}
-          </button>
-
-          {/* Tab 2: Menu */}
-          <button
-            onClick={() => {
-              setActiveTab("menu");
-              playSound("click");
-            }}
-            className={`flex flex-col items-center justify-center py-1.5 rounded-xl transition-all ${
-              activeTab === "menu"
-                ? "text-[#D62300] font-black scale-105"
-                : "text-[#502314]/70 hover:text-[#502314] font-bold"
-            }`}
-          >
-            <span className="text-xl mb-0.5">🍔</span>
-            <span className="text-[11px]">المنيو</span>
-            {activeTab === "menu" && <div className="w-1.5 h-1.5 bg-[#D62300] rounded-full mt-0.5" />}
-          </button>
-
-          {/* Tab 3: Offers */}
-          <button
-            onClick={() => {
-              setActiveTab("offers");
-              playSound("click");
-            }}
-            className={`flex flex-col items-center justify-center py-1.5 rounded-xl transition-all ${
-              activeTab === "offers"
-                ? "text-[#D62300] font-black scale-105"
-                : "text-[#502314]/70 hover:text-[#502314] font-bold"
-            }`}
-          >
-            <span className="text-xl mb-0.5">🔥</span>
-            <span className="text-[11px]">العروض</span>
-            {activeTab === "offers" && <div className="w-1.5 h-1.5 bg-[#D62300] rounded-full mt-0.5" />}
-          </button>
-
-          {/* Tab 4: Rewards */}
-          <button
-            onClick={() => {
-              setActiveTab("rewards");
-              playSound("click");
-            }}
-            className={`flex flex-col items-center justify-center py-1.5 rounded-xl transition-all ${
-              activeTab === "rewards"
-                ? "text-[#D62300] font-black scale-105"
-                : "text-[#502314]/70 hover:text-[#502314] font-bold"
-            }`}
-          >
-            <span className="text-xl mb-0.5">👑</span>
-            <span className="text-[11px]">المكافآت</span>
-            {activeTab === "rewards" && <div className="w-1.5 h-1.5 bg-[#D62300] rounded-full mt-0.5" />}
-          </button>
+      {/* 4. BURGER KING 4-BOTTOM-TAB NAVIGATION */}
+      <nav
+        style={{
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
+          backgroundColor: "#FAF3E8",
+          borderTop: "2px solid rgba(80, 35, 20, 0.15)",
+          boxShadow: "0 -4px 20px rgba(80, 35, 20, 0.08)",
+          padding: "8px 12px",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "480px",
+            margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: "4px",
+          }}
+        >
+          {[
+            { id: "home", label: "الرئيسية", icon: "🏠" },
+            { id: "menu", label: "المنيو", icon: "🍔" },
+            { id: "offers", label: "العروض", icon: "🔥" },
+            { id: "rewards", label: "المكافآت", icon: "👑" },
+          ].map((tab) => {
+            const active = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  setActiveTab(tab.id as any);
+                  playSound("click");
+                }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "6px 2px",
+                  borderRadius: "12px",
+                  color: active ? "#D62300" : "rgba(80, 35, 20, 0.7)",
+                  transform: active ? "scale(1.08)" : "scale(1)",
+                  transition: "all 0.2s",
+                }}
+              >
+                <span style={{ fontSize: "20px", marginBottom: "2px" }}>{tab.icon}</span>
+                <span style={{ fontSize: "11px", fontWeight: active ? 900 : 700 }}>{tab.label}</span>
+                {active && (
+                  <div style={{ width: "6px", height: "6px", backgroundColor: "#D62300", borderRadius: "50%", marginTop: "3px" }} />
+                )}
+              </button>
+            );
+          })}
         </div>
       </nav>
 
-      {/* ============================================================ */}
-      {/* 5. MODAL: PRODUCT CUSTOMIZATION (Sizes & Extras) */}
-      {/* ============================================================ */}
+      {/* 5. PRODUCT CUSTOMIZATION MODAL */}
       {customizingProduct && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-[#F5EBDC] rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border-4 border-[#FFAE00] flex flex-col">
-            {/* Header */}
-            <div className="relative h-44 bg-[#502314] overflow-hidden">
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1100,
+            backgroundColor: "rgba(0,0,0,0.65)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "16px",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#FAF3E8",
+              borderRadius: "28px",
+              maxWidth: "520px",
+              width: "100%",
+              maxHeight: "90vh",
+              overflowY: "auto",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.3)",
+              border: "3px solid #FFAE00",
+              position: "relative",
+            }}
+          >
+            <div style={{ position: "relative", height: "180px", backgroundColor: "#502314" }}>
               <img
                 src={customizingProduct.image || "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600"}
                 alt={customizingProduct.nameAr}
-                className="w-full h-full object-cover"
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />
               <button
                 onClick={() => setCustomizingProduct(null)}
-                className="absolute top-3 left-3 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black transition-colors"
+                style={{
+                  position: "absolute",
+                  top: "12px",
+                  left: "12px",
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(0,0,0,0.6)",
+                  color: "#FFFFFF",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
-                <X className="w-5 h-5" />
+                <X size={18} />
               </button>
             </div>
 
-            <div className="p-6 flex-1">
-              <h3 className="text-xl font-black text-[#502314] mb-1">
+            <div style={{ padding: "20px" }}>
+              <h3 style={{ fontSize: "20px", fontWeight: 900, color: "#502314", margin: "0 0 4px 0" }}>
                 {customizingProduct.nameAr}
               </h3>
-              <p className="text-xs text-[#502314]/70 mb-4 leading-relaxed">
+              <p style={{ fontSize: "13px", color: "#7E6554", lineHeight: 1.5, margin: "0 0 18px 0" }}>
                 {customizingProduct.description}
               </p>
 
               {/* Sizes Selection */}
               {customizingProduct.sizes && (
-                <div className="mb-5">
-                  <span className="text-xs font-black uppercase text-[#D62300] block mb-2">
+                <div style={{ marginBottom: "18px" }}>
+                  <span style={{ fontSize: "12px", fontWeight: 900, color: "#D62300", display: "block", marginBottom: "8px" }}>
                     اختر الحجم والوزن 🥩
                   </span>
-                  <div className="grid grid-cols-2 gap-2">
-                    {JSON.parse(customizingProduct.sizes).map((sz: any, idx: number) => (
-                      <button
-                        key={idx}
-                        onClick={() => setSelectedSize(sz)}
-                        className={`p-3 rounded-2xl text-right border-2 font-black text-xs transition-all ${
-                          selectedSize?.nameAr === sz.nameAr
-                            ? "bg-[#D62300] text-white border-[#D62300] shadow-md"
-                            : "bg-white text-[#502314] border-[#502314]/15 hover:bg-[#FAF3E8]"
-                        }`}
-                      >
-                        <div className="font-black">{sz.nameAr}</div>
-                        <div className="text-[11px] opacity-80">
-                          {sz.price > 0 ? `+${sz.price} جنيه` : "السعر الأساسي"}
-                        </div>
-                      </button>
-                    ))}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
+                    {JSON.parse(customizingProduct.sizes).map((sz: any, idx: number) => {
+                      const active = selectedSize?.nameAr === sz.nameAr;
+                      return (
+                        <button
+                          key={idx}
+                          onClick={() => setSelectedSize(sz)}
+                          style={{
+                            padding: "10px",
+                            borderRadius: "14px",
+                            textAlign: "right",
+                            border: active ? "2px solid #D62300" : "1.5px solid rgba(80,35,20,0.15)",
+                            backgroundColor: active ? "#D62300" : "#FFFFFF",
+                            color: active ? "#FFFFFF" : "#502314",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <div style={{ fontWeight: 900, fontSize: "13px" }}>{sz.nameAr}</div>
+                          <div style={{ fontSize: "11px", opacity: 0.8 }}>
+                            {sz.price > 0 ? `+${sz.price} جنيه` : "السعر الأساسي"}
+                          </div>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
               )}
 
-              {/* Extra Addons */}
-              <div className="mb-5">
-                <span className="text-xs font-black uppercase text-[#D62300] block mb-2">
+              {/* Extras */}
+              <div style={{ marginBottom: "18px" }}>
+                <span style={{ fontSize: "12px", fontWeight: 900, color: "#D62300", display: "block", marginBottom: "8px" }}>
                   إضافات وصوصات الكابتن 🧀
                 </span>
-                <div className="space-y-2">
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   {EXTRA_OPTIONS.map((extra, idx) => {
                     const isChecked = selectedExtras.includes(extra.nameAr);
                     return (
@@ -1397,19 +1883,36 @@ export default function StorefrontPage() {
                             setSelectedExtras([...selectedExtras, extra.nameAr]);
                           }
                         }}
-                        className={`w-full p-2.5 rounded-xl border flex items-center justify-between text-xs font-bold transition-all ${
-                          isChecked
-                            ? "bg-[#FAF3E8] border-[#D62300] text-[#D62300]"
-                            : "bg-white border-[#502314]/10 text-[#502314]"
-                        }`}
+                        style={{
+                          width: "100%",
+                          padding: "10px 14px",
+                          borderRadius: "12px",
+                          border: isChecked ? "1.5px solid #D62300" : "1px solid rgba(80,35,20,0.12)",
+                          backgroundColor: isChecked ? "#FAF3E8" : "#FFFFFF",
+                          color: isChecked ? "#D62300" : "#502314",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          cursor: "pointer",
+                          fontSize: "13px",
+                          fontWeight: 700,
+                        }}
                       >
-                        <div className="flex items-center gap-2">
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                           <div
-                            className={`w-4 h-4 rounded border flex items-center justify-center ${
-                              isChecked ? "bg-[#D62300] border-[#D62300] text-white" : "border-gray-400"
-                            }`}
+                            style={{
+                              width: "16px",
+                              height: "16px",
+                              borderRadius: "4px",
+                              border: isChecked ? "2px solid #D62300" : "1.5px solid #7E6554",
+                              backgroundColor: isChecked ? "#D62300" : "transparent",
+                              color: "#FFFFFF",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
                           >
-                            {isChecked && <Check className="w-3 h-3" />}
+                            {isChecked && <Check size={12} />}
                           </div>
                           <span>{extra.nameAr}</span>
                         </div>
@@ -1421,25 +1924,48 @@ export default function StorefrontPage() {
               </div>
 
               {/* Special Note */}
-              <div className="mb-4">
-                <label className="text-xs font-black text-[#502314] block mb-1">
-                  ملاحظات خاصة بالساندوتش (بدون بصل، مايونيز زيادة...)
+              <div style={{ marginBottom: "18px" }}>
+                <label style={{ fontSize: "12px", fontWeight: 900, color: "#502314", display: "block", marginBottom: "6px" }}>
+                  ملاحظات للشيف (بدون بصل، مايونيز زيادة...)
                 </label>
                 <input
                   type="text"
-                  placeholder="اكتب ملاحظاتك للشيف..."
+                  placeholder="اكتب ملاحظاتك..."
                   value={itemNote}
                   onChange={(e) => setItemNote(e.target.value)}
-                  className="w-full p-2.5 bg-white border border-[#502314]/20 rounded-xl text-xs font-bold focus:outline-none focus:border-[#D62300]"
+                  style={{
+                    width: "100%",
+                    padding: "10px 14px",
+                    backgroundColor: "#FFFFFF",
+                    border: "1.5px solid rgba(80,35,20,0.15)",
+                    borderRadius: "12px",
+                    fontSize: "13px",
+                    color: "#502314",
+                    boxSizing: "border-box",
+                  }}
                 />
               </div>
 
-              {/* Add Button */}
               <button
                 onClick={addCustomizedToCart}
-                className="w-full bg-[#D62300] hover:bg-[#502314] text-white font-black py-3.5 rounded-2xl shadow-xl transition-all text-sm flex items-center justify-center gap-2 active:scale-95"
+                style={{
+                  width: "100%",
+                  backgroundColor: "#D62300",
+                  color: "#FFFFFF",
+                  border: "none",
+                  borderRadius: "16px",
+                  padding: "14px",
+                  fontSize: "15px",
+                  fontWeight: 900,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                  boxShadow: "0 6px 18px rgba(214, 35, 0, 0.35)",
+                }}
               >
-                <Plus className="w-5 h-5" />
+                <Plus size={18} />
                 <span>إضافة إلى السلة</span>
               </button>
             </div>
@@ -1447,133 +1973,249 @@ export default function StorefrontPage() {
         </div>
       )}
 
-      {/* ============================================================ */}
-      {/* 6. DRAWER: CART & COMPLETE ORDER CHECKOUT */}
-      {/* ============================================================ */}
+      {/* 6. CART DRAWER & CHECKOUT */}
       {cartOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex justify-end animate-fadeIn">
-          <div className="bg-[#FAF3E8] w-full max-w-md h-full flex flex-col shadow-2xl border-l-4 border-[#FFAE00] animate-slideInRight">
-            {/* Drawer Header */}
-            <div className="bg-[#502314] text-[#FAF3E8] p-4 flex items-center justify-between border-b-2 border-[#FFAE00]">
-              <div className="flex items-center gap-2">
-                <ShoppingCart className="w-5 h-5 text-[#FFAE00]" />
-                <h3 className="font-black text-base">سلة طلبات كابتن برجر</h3>
-                <span className="text-xs bg-[#FFAE00] text-[#502314] font-black px-2 py-0.5 rounded-full">
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1100,
+            backgroundColor: "rgba(0,0,0,0.6)",
+            backdropFilter: "blur(4px)",
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#FAF3E8",
+              width: "100%",
+              maxWidth: "450px",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "0 0 40px rgba(0,0,0,0.3)",
+              borderLeft: "3px solid #FFAE00",
+            }}
+          >
+            {/* Header */}
+            <div
+              style={{
+                backgroundColor: "#502314",
+                color: "#FAF3E8",
+                padding: "16px 20px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                borderBottom: "2px solid #FFAE00",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <ShoppingCart size={20} color="#FFAE00" />
+                <h3 style={{ fontSize: "16px", fontWeight: 900, margin: 0 }}>سلة طلبات كابتن برجر</h3>
+                <span
+                  style={{
+                    backgroundColor: "#FFAE00",
+                    color: "#502314",
+                    fontSize: "11px",
+                    fontWeight: 900,
+                    padding: "2px 8px",
+                    borderRadius: "100px",
+                  }}
+                >
                   {cartTotalQty}
                 </span>
               </div>
+
               <button
                 onClick={() => setCartOpen(false)}
-                className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
+                  backgroundColor: "rgba(255,255,255,0.15)",
+                  color: "#FFFFFF",
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
-                <X className="w-5 h-5" />
+                <X size={18} />
               </button>
             </div>
 
-            {/* Drawer Content */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {/* Body */}
+            <div style={{ flex: 1, overflowY: "auto", padding: "16px" }}>
               {cart.length === 0 ? (
-                <div className="text-center py-16">
-                  <ShoppingCart className="w-12 h-12 text-[#502314]/20 mx-auto mb-3" />
-                  <h4 className="font-black text-base text-[#502314]">السلة فارغة حالياً</h4>
-                  <p className="text-xs text-[#502314]/60 mt-1">تصفح المنيو واختر وجبتك المفضلة!</p>
+                <div style={{ textAlign: "center", padding: "60px 10px" }}>
+                  <ShoppingCart size={48} color="rgba(80,35,20,0.2)" />
+                  <h4 style={{ fontSize: "16px", fontWeight: 900, color: "#502314", marginTop: "12px" }}>
+                    السلة فارغة حالياً
+                  </h4>
+                  <p style={{ fontSize: "12px", color: "#7E6554" }}>تصفح المنيو واختر وجبتك المفضلة!</p>
                 </div>
               ) : (
-                <>
-                  {/* Cart Items List */}
-                  <div className="space-y-3">
+                <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                  {/* Items List */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                     {cart.map((item, idx) => (
                       <div
                         key={idx}
-                        className="bg-white p-3.5 rounded-2xl border border-[#502314]/10 shadow-sm flex items-center justify-between gap-3"
+                        style={{
+                          backgroundColor: "#FFFFFF",
+                          borderRadius: "18px",
+                          padding: "14px",
+                          border: "1.5px solid rgba(80,35,20,0.1)",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          gap: "12px",
+                        }}
                       >
-                        <div className="flex-1">
-                          <h4 className="font-black text-sm text-[#502314]">{item.product.nameAr}</h4>
+                        <div style={{ flex: 1 }}>
+                          <h4 style={{ fontSize: "14px", fontWeight: 900, color: "#502314", margin: "0 0 2px 0" }}>
+                            {item.product.nameAr}
+                          </h4>
                           {item.selectedOption && (
-                            <p className="text-[11px] text-[#502314]/60">{item.selectedOption}</p>
+                            <p style={{ fontSize: "11px", color: "#7E6554", margin: "0 0 2px 0" }}>{item.selectedOption}</p>
                           )}
                           {item.extras.length > 0 && (
-                            <p className="text-[10px] text-[#D62300] font-bold">
+                            <p style={{ fontSize: "11px", color: "#D62300", fontWeight: 700, margin: "0 0 4px 0" }}>
                               +{item.extras.join(", ")}
                             </p>
                           )}
-                          <span className="text-xs font-black text-[#D62300] mt-1 block">
+                          <span style={{ fontSize: "13px", fontWeight: 900, color: "#D62300" }}>
                             {item.unitPrice * item.qty} ج.م
                           </span>
                         </div>
 
-                        {/* Qty Controls */}
-                        <div className="flex items-center gap-2 bg-[#F5EBDC] px-2 py-1 rounded-xl border border-[#502314]/15">
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            backgroundColor: "#F5EBDC",
+                            padding: "4px 8px",
+                            borderRadius: "12px",
+                          }}
+                        >
                           <button
                             onClick={() => updateItemQty(idx, -1)}
-                            className="w-6 h-6 rounded-lg bg-white text-[#502314] flex items-center justify-center shadow-xs hover:bg-red-50"
+                            style={{
+                              width: "24px",
+                              height: "24px",
+                              borderRadius: "8px",
+                              backgroundColor: "#FFFFFF",
+                              border: "none",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
                           >
-                            <Minus className="w-3.5 h-3.5" />
+                            <Minus size={14} />
                           </button>
-                          <span className="font-black text-xs text-[#502314] min-w-[16px] text-center">
+                          <span style={{ fontWeight: 900, fontSize: "13px", minWidth: "16px", textAlign: "center" }}>
                             {item.qty}
                           </span>
                           <button
                             onClick={() => updateItemQty(idx, 1)}
-                            className="w-6 h-6 rounded-lg bg-[#D62300] text-white flex items-center justify-center shadow-xs hover:bg-red-700"
+                            style={{
+                              width: "24px",
+                              height: "24px",
+                              borderRadius: "8px",
+                              backgroundColor: "#D62300",
+                              color: "#FFFFFF",
+                              border: "none",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
                           >
-                            <Plus className="w-3.5 h-3.5" />
+                            <Plus size={14} />
                           </button>
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  {/* Coupon Code Input */}
-                  <div className="bg-white p-3 rounded-2xl border border-[#502314]/10">
-                    <span className="text-xs font-black text-[#502314] block mb-2">
-                      لديك كود خصم أو كوبون؟ 🎟️
+                  {/* Coupon Box */}
+                  <div style={{ backgroundColor: "#FFFFFF", borderRadius: "18px", padding: "14px", border: "1.5px solid rgba(80,35,20,0.1)" }}>
+                    <span style={{ fontSize: "12px", fontWeight: 900, color: "#502314", display: "block", marginBottom: "8px" }}>
+                      كود الخصم أو الكوبون 🎟️
                     </span>
-                    <div className="flex gap-2">
+                    <div style={{ display: "flex", gap: "8px" }}>
                       <input
                         type="text"
-                        placeholder="أدخل الكوبون (مثال: CAPTAIN20)"
+                        placeholder="أدخل الكوبون..."
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value)}
-                        className="flex-1 p-2 bg-[#F5EBDC] border border-[#502314]/15 rounded-xl text-xs font-mono font-bold uppercase focus:outline-none focus:border-[#D62300]"
+                        style={{
+                          flex: 1,
+                          padding: "10px",
+                          backgroundColor: "#F5EBDC",
+                          border: "1px solid rgba(80,35,20,0.15)",
+                          borderRadius: "12px",
+                          fontSize: "12px",
+                          fontFamily: "monospace",
+                          fontWeight: 900,
+                          textTransform: "uppercase",
+                        }}
                       />
                       <button
                         onClick={() => applyCoupon()}
-                        className="bg-[#502314] text-[#FFAE00] font-black px-4 py-2 rounded-xl text-xs hover:bg-[#3D1A0F] transition-all"
+                        style={{
+                          backgroundColor: "#502314",
+                          color: "#FFAE00",
+                          border: "none",
+                          borderRadius: "12px",
+                          padding: "10px 16px",
+                          fontSize: "12px",
+                          fontWeight: 900,
+                          cursor: "pointer",
+                        }}
                       >
                         تطبيق
                       </button>
                     </div>
-                    {couponApplied && (
-                      <p className="text-[11px] font-bold text-green-700 mt-2 flex items-center gap-1">
-                        <Check className="w-3.5 h-3.5" />
-                        <span>تم تطبيق الكوبون بنجاح: خصم {couponDiscount} ج</span>
-                      </p>
-                    )}
                   </div>
 
-                  {/* Customer Checkout Form */}
-                  <form onSubmit={handleCheckout} className="bg-white p-4 rounded-2xl border border-[#502314]/10 space-y-3">
-                    <h4 className="font-black text-xs text-[#D62300] uppercase tracking-wider">
-                      بيانات العميل والتوصيل 🛵
-                    </h4>
+                  {/* Checkout Form */}
+                  <form
+                    onSubmit={handleCheckout}
+                    style={{
+                      backgroundColor: "#FFFFFF",
+                      borderRadius: "18px",
+                      padding: "16px",
+                      border: "1.5px solid rgba(80,35,20,0.1)",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "12px",
+                    }}
+                  >
+                    <span style={{ fontSize: "12px", fontWeight: 900, color: "#D62300", textTransform: "uppercase" }}>
+                      بيانات التوصيل 🛵
+                    </span>
 
                     <div>
-                      <label className="text-[11px] font-black text-[#502314] block mb-1">
+                      <label style={{ fontSize: "11px", fontWeight: 900, color: "#502314", display: "block", marginBottom: "4px" }}>
                         الاسم بالكامل *
                       </label>
                       <input
                         type="text"
                         required
-                        placeholder="مثال: أحمد محمود"
+                        placeholder="اسم العميل..."
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
-                        className="w-full p-2.5 bg-[#F5EBDC] border border-[#502314]/15 rounded-xl text-xs font-bold focus:outline-none focus:border-[#D62300]"
+                        style={{ width: "100%", padding: "10px", backgroundColor: "#F5EBDC", border: "1px solid rgba(80,35,20,0.15)", borderRadius: "10px", fontSize: "13px", boxSizing: "border-box" }}
                       />
                     </div>
 
                     <div>
-                      <label className="text-[11px] font-black text-[#502314] block mb-1">
+                      <label style={{ fontSize: "11px", fontWeight: 900, color: "#502314", display: "block", marginBottom: "4px" }}>
                         رقم الهاتف / واتساب *
                       </label>
                       <input
@@ -1583,14 +2225,14 @@ export default function StorefrontPage() {
                         placeholder="01xxxxxxxxx"
                         value={customerPhone}
                         onChange={(e) => setCustomerPhone(e.target.value)}
-                        className="w-full p-2.5 bg-[#F5EBDC] border border-[#502314]/15 rounded-xl text-xs font-bold text-right focus:outline-none focus:border-[#D62300]"
+                        style={{ width: "100%", padding: "10px", backgroundColor: "#F5EBDC", border: "1px solid rgba(80,35,20,0.15)", borderRadius: "10px", fontSize: "13px", textAlign: "right", boxSizing: "border-box" }}
                       />
                     </div>
 
                     {orderType === "delivery" && (
                       <>
                         <div>
-                          <label className="text-[11px] font-black text-[#502314] block mb-1">
+                          <label style={{ fontSize: "11px", fontWeight: 900, color: "#502314", display: "block", marginBottom: "4px" }}>
                             منطقة التوصيل (زايد وأكتوبر) *
                           </label>
                           <select
@@ -1599,7 +2241,7 @@ export default function StorefrontPage() {
                               const found = ALL_DELIVERY_ZONES.find((z) => z.code === e.target.value);
                               if (found) setSelectedZone(found);
                             }}
-                            className="w-full p-2.5 bg-[#F5EBDC] border border-[#502314]/15 rounded-xl text-xs font-bold text-[#502314] focus:outline-none focus:border-[#D62300]"
+                            style={{ width: "100%", padding: "10px", backgroundColor: "#F5EBDC", border: "1px solid rgba(80,35,20,0.15)", borderRadius: "10px", fontSize: "13px", color: "#502314", boxSizing: "border-box" }}
                           >
                             {ALL_DELIVERY_ZONES.map((z) => (
                               <option key={z.code} value={z.code}>
@@ -1610,184 +2252,193 @@ export default function StorefrontPage() {
                         </div>
 
                         <div>
-                          <label className="text-[11px] font-black text-[#502314] block mb-1">
-                            العنوان بالتفصيل (عمارة، شقة، علامة مميزة) *
+                          <label style={{ fontSize: "11px", fontWeight: 900, color: "#502314", display: "block", marginBottom: "4px" }}>
+                            العنوان بالتفصيل *
                           </label>
                           <textarea
                             required
                             rows={2}
-                            placeholder="اكتب العنوان بالتفصيل..."
+                            placeholder="العمارة، الشقة، علامة مميزة..."
                             value={deliveryAddress}
                             onChange={(e) => setDeliveryAddress(e.target.value)}
-                            className="w-full p-2 bg-[#F5EBDC] border border-[#502314]/15 rounded-xl text-xs font-bold focus:outline-none focus:border-[#D62300]"
+                            style={{ width: "100%", padding: "10px", backgroundColor: "#F5EBDC", border: "1px solid rgba(80,35,20,0.15)", borderRadius: "10px", fontSize: "13px", boxSizing: "border-box" }}
                           />
                         </div>
                       </>
                     )}
 
-                    {orderType === "dine_in" && (
-                      <div>
-                        <label className="text-[11px] font-black text-[#502314] block mb-1">
-                          رقم الطاولة في الصالة *
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          placeholder="مثال: طاولة 5"
-                          value={tableNumber}
-                          onChange={(e) => setTableNumber(e.target.value)}
-                          className="w-full p-2 bg-[#F5EBDC] border border-[#502314]/15 rounded-xl text-xs font-bold focus:outline-none focus:border-[#D62300]"
-                        />
-                      </div>
-                    )}
-
-                    {/* Payment Method */}
-                    <div>
-                      <label className="text-[11px] font-black text-[#502314] block mb-1">
-                        طريقة الدفع المفضلة 💳
-                      </label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {[
-                          { id: "cash", label: "كاش عند الاستلام" },
-                          { id: "card", label: "فيزا / ماستركارد" },
-                          { id: "vodafone_cash", label: "فودافون كاش" },
-                          { id: "instapay", label: "إنستاباي InstaPay" },
-                        ].map((m) => (
-                          <button
-                            type="button"
-                            key={m.id}
-                            onClick={() => setPaymentMethod(m.id as any)}
-                            className={`p-2 rounded-xl text-xs font-bold border transition-all ${
-                              paymentMethod === m.id
-                                ? "bg-[#D62300] text-white border-[#D62300]"
-                                : "bg-[#F5EBDC] text-[#502314] border-[#502314]/15"
-                            }`}
-                          >
-                            {m.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Order Notes */}
-                    <div>
-                      <label className="text-[11px] font-black text-[#502314] block mb-1">
-                        ملاحظات إضافية للطلب
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="أي تفاصيل أخرى..."
-                        value={orderNotes}
-                        onChange={(e) => setOrderNotes(e.target.value)}
-                        className="w-full p-2 bg-[#F5EBDC] border border-[#502314]/15 rounded-xl text-xs font-bold focus:outline-none focus:border-[#D62300]"
-                      />
-                    </div>
-
-                    {/* Summary Totals */}
-                    <div className="pt-3 border-t border-[#502314]/10 space-y-1 text-xs">
-                      <div className="flex justify-between text-[#502314]/70">
+                    {/* Summary */}
+                    <div style={{ paddingTop: "10px", borderTop: "1px solid rgba(80,35,20,0.1)", display: "flex", flexDirection: "column", gap: "4px", fontSize: "13px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", color: "#7E6554" }}>
                         <span>قيمة الساندوتشات:</span>
                         <span>{cartSubtotal} ج.م</span>
                       </div>
                       {couponApplied && (
-                        <div className="flex justify-between text-green-700 font-bold">
+                        <div style={{ display: "flex", justifyContent: "space-between", color: "green", fontWeight: 700 }}>
                           <span>خصم الكوبون:</span>
                           <span>-{couponDiscount} ج.م</span>
                         </div>
                       )}
                       {orderType === "delivery" && (
-                        <div className="flex justify-between text-[#502314]/70">
-                          <span>رسوم التوصيل ({selectedZone.nameEn}):</span>
+                        <div style={{ display: "flex", justifyContent: "space-between", color: "#7E6554" }}>
+                          <span>رسوم التوصيل:</span>
                           <span>{deliveryFee} ج.م</span>
                         </div>
                       )}
-                      <div className="flex justify-between text-base font-black text-[#D62300] pt-2 border-t border-[#502314]/10">
-                        <span>المجموع الإجمالي:</span>
+                      <div style={{ display: "flex", justifyContent: "space-between", fontSize: "17px", fontWeight: 900, color: "#D62300", paddingTop: "6px", borderTop: "1px solid rgba(80,35,20,0.1)" }}>
+                        <span>الإجمالي المطلوب:</span>
                         <span>{cartTotal} ج.م</span>
                       </div>
                     </div>
 
-                    {/* Submit Button */}
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="w-full bg-[#D62300] hover:bg-[#502314] text-white font-black py-3.5 rounded-2xl shadow-xl transition-all text-sm flex items-center justify-center gap-2 disabled:opacity-50 active:scale-95"
+                      style={{
+                        backgroundColor: "#D62300",
+                        color: "#FFFFFF",
+                        border: "none",
+                        borderRadius: "14px",
+                        padding: "14px",
+                        fontSize: "14px",
+                        fontWeight: 900,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px",
+                        boxShadow: "0 4px 14px rgba(214, 35, 0, 0.35)",
+                      }}
                     >
                       {submitting ? (
                         <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
+                          <Loader2 size={18} className="animate-spin" />
                           <span>جاري تأكيد الطلب...</span>
                         </>
                       ) : (
                         <>
-                          <CheckCircle2 className="w-5 h-5" />
+                          <CheckCircle2 size={18} />
                           <span>تأكيد الطلب الآن ({cartTotal} ج)</span>
                         </>
                       )}
                     </button>
                   </form>
-                </>
+                </div>
               )}
             </div>
           </div>
         </div>
       )}
 
-      {/* ============================================================ */}
-      {/* 7. MODAL: ORDER SUCCESS DIALOG */}
-      {/* ============================================================ */}
+      {/* 7. ORDER SUCCESS MODAL */}
       {orderSuccess && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 animate-fadeIn">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 text-center border-4 border-[#FFAE00] shadow-2xl">
-            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-10 h-10" />
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1200,
+            backgroundColor: "rgba(0,0,0,0.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "16px",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: "28px",
+              maxWidth: "420px",
+              width: "100%",
+              padding: "28px",
+              textAlign: "center",
+              border: "4px solid #FFAE00",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.3)",
+            }}
+          >
+            <div
+              style={{
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+                backgroundColor: "#DCFCE7",
+                color: "#16A34A",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                margin: "0 auto 16px",
+              }}
+            >
+              <CheckCircle2 size={36} />
             </div>
 
-            <h3 className="text-xl font-black text-[#502314] mb-1">
+            <h3 style={{ fontSize: "20px", fontWeight: 900, color: "#502314", margin: "0 0 6px 0" }}>
               تم استلام طلبك بنجاح! 🍔🎉
             </h3>
-            <p className="text-xs text-[#502314]/70 mb-4">
-              شكراً لاختيارك كابتن برجر. شيفاتنا بدأت في تحضير برجر عالفحم حالاً!
+            <p style={{ fontSize: "13px", color: "#7E6554", margin: "0 0 20px 0" }}>
+              شيفات كابتن برجر بدأت في تحضير برجر عالفحم حالاً!
             </p>
 
-            <div className="bg-[#F5EBDC] p-4 rounded-2xl border border-[#502314]/15 mb-6 text-right space-y-1.5 text-xs">
-              <div className="flex justify-between">
-                <span className="font-bold text-[#502314]/70">رقم الطلب:</span>
-                <span className="font-mono font-black text-[#D62300]">{orderSuccess.orderNumber}</span>
+            <div
+              style={{
+                backgroundColor: "#F5EBDC",
+                padding: "14px",
+                borderRadius: "16px",
+                marginBottom: "20px",
+                fontSize: "13px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "6px",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#7E6554", fontWeight: 700 }}>رقم الطلب:</span>
+                <span style={{ fontWeight: 900, color: "#D62300", fontFamily: "monospace" }}>{orderSuccess.orderNumber}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="font-bold text-[#502314]/70">إجمالي المبلغ:</span>
-                <span className="font-black text-[#502314]">{orderSuccess.totalAmount} ج.م</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="font-bold text-[#502314]/70">نوع الخدمة:</span>
-                <span className="font-bold text-[#502314]">{orderSuccess.serviceType}</span>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span style={{ color: "#7E6554", fontWeight: 700 }}>الإجمالي:</span>
+                <span style={{ fontWeight: 900, color: "#502314" }}>{orderSuccess.totalAmount} ج.م</span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               <Link
-                href={`/track/${orderSuccess.orderNumber}`}
-                className="w-full bg-[#D62300] hover:bg-[#502314] text-white font-black py-3 rounded-2xl shadow-md text-xs sm:text-sm transition-all"
+                href={`/track?order=${encodeURIComponent(orderSuccess.orderNumber)}`}
+                style={{
+                  backgroundColor: "#D62300",
+                  color: "#FFFFFF",
+                  padding: "12px",
+                  borderRadius: "14px",
+                  fontSize: "13px",
+                  fontWeight: 900,
+                  textDecoration: "none",
+                }}
               >
                 تتبع حالة الطلب بالثانية 🛵
               </Link>
+
               <button
                 onClick={() => setOrderSuccess(null)}
-                className="w-full bg-[#F5EBDC] hover:bg-[#EAE0D1] text-[#502314] font-bold py-2.5 rounded-2xl text-xs transition-colors"
+                style={{
+                  backgroundColor: "#F5EBDC",
+                  color: "#502314",
+                  border: "none",
+                  borderRadius: "14px",
+                  padding: "10px",
+                  fontSize: "12px",
+                  fontWeight: 800,
+                  cursor: "pointer",
+                }}
               >
-                العودة للمتجر
+                العودة للرئيسية
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* 8. CUSTOMER ACCOUNT MODAL & CHAT WIDGET */}
-      <CustomerAccountModal
-        isOpen={customerModalOpen}
-        onClose={() => setCustomerModalOpen(false)}
-      />
+      {/* 8. CUSTOMER ACCOUNT & CHAT */}
+      <CustomerAccountModal isOpen={customerModalOpen} onClose={() => setCustomerModalOpen(false)} />
       <CustomerChatWidget />
     </div>
   );
